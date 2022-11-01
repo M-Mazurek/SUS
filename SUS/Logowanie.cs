@@ -5,8 +5,13 @@ namespace SUS
         public Logowanie()
         {
             InitializeComponent();
-            menu.Renderer = new Renderer(); //override menuStrip with our functions
-            MenuStripFunctions.CreateEvents(menu);
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            Hide();
+            new PanelKonto().ShowDialog();
+            Close();
         }
     }
 }
