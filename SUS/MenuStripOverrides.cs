@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace SUS
 {
     class MenuStripFunctions 
     {
+        public static Form? currentForm = null;
         public static void CreateEvents(MenuStrip menu) 
         {
             foreach (ToolStripItem item in menu.Items) 
@@ -21,8 +23,14 @@ namespace SUS
             ToolStripItem? item = sender as ToolStripItem;
             if (item == null)
                 return;
-            // Open Tab
-            MessageBox.Show(item.Text);
+            
+            Form? form = ExtensionMethods.CreateObjectInstance("SUS.Panel" + item.Text) as Form; // create object of our new form
+
+            // trying to open same form skip)
+            if (currentForm!.GetType() == form!.GetType())
+                return;
+
+            ExtensionMethods.SwitchForm(currentForm!, form!); // open new form
         }
     }
     class Renderer : ToolStripProfessionalRenderer 

@@ -31,13 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Logowanie));
             this.btnConfirm = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.wrongCredentials = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.txtLogin = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.backgroundPicture = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backgroundPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // btnConfirm
@@ -48,7 +49,7 @@
             this.btnConfirm.Location = new System.Drawing.Point(53, 198);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(150, 30);
-            this.btnConfirm.TabIndex = 1;
+            this.btnConfirm.TabIndex = 2;
             this.btnConfirm.Text = "Zatwierdź";
             this.btnConfirm.UseVisualStyleBackColor = false;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
@@ -56,6 +57,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            this.panel1.Controls.Add(this.wrongCredentials);
             this.panel1.Controls.Add(this.txtPassword);
             this.panel1.Controls.Add(this.btnConfirm);
             this.panel1.Controls.Add(this.txtLogin);
@@ -66,6 +68,17 @@
             this.panel1.Size = new System.Drawing.Size(256, 256);
             this.panel1.TabIndex = 2;
             // 
+            // wrongCredentials
+            // 
+            this.wrongCredentials.AutoSize = true;
+            this.wrongCredentials.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.wrongCredentials.ForeColor = System.Drawing.Color.White;
+            this.wrongCredentials.Location = new System.Drawing.Point(73, 155);
+            this.wrongCredentials.Name = "wrongCredentials";
+            this.wrongCredentials.Size = new System.Drawing.Size(111, 19);
+            this.wrongCredentials.TabIndex = 4;
+            this.wrongCredentials.Text = "Podałeś złe dane";
+            // 
             // txtPassword
             // 
             this.txtPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
@@ -75,7 +88,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(150, 16);
-            this.txtPassword.TabIndex = 3;
+            this.txtPassword.TabIndex = 1;
             this.txtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtLogin
@@ -86,7 +99,7 @@
             this.txtLogin.Location = new System.Drawing.Point(53, 53);
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(150, 16);
-            this.txtLogin.TabIndex = 2;
+            this.txtLogin.TabIndex = 0;
             this.txtLogin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
@@ -111,15 +124,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Login";
             // 
-            // pictureBox1
+            // backgroundPicture
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(64, 64);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
+            this.backgroundPicture.BackColor = System.Drawing.Color.Transparent;
+            this.backgroundPicture.Image = ((System.Drawing.Image)(resources.GetObject("backgroundPicture.Image")));
+            this.backgroundPicture.Location = new System.Drawing.Point(44, 101);
+            this.backgroundPicture.Name = "backgroundPicture";
+            this.backgroundPicture.Size = new System.Drawing.Size(46, 54);
+            this.backgroundPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.backgroundPicture.TabIndex = 3;
+            this.backgroundPicture.TabStop = false;
             // 
             // Logowanie
             // 
@@ -127,8 +141,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ClientSize = new System.Drawing.Size(584, 361);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.backgroundPicture);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(600, 400);
             this.MinimumSize = new System.Drawing.Size(600, 400);
@@ -136,7 +150,7 @@
             this.Text = "SUS : Logowanie";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backgroundPicture)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -148,6 +162,7 @@
         private TextBox txtLogin;
         private Label label2;
         private Label label1;
-        private PictureBox pictureBox1;
+        private PictureBox backgroundPicture;
+        private Label wrongCredentials;
     }
 }

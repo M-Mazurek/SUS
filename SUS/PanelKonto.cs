@@ -17,6 +17,7 @@ namespace SUS
             InitializeComponent();
             menu.Renderer = new Renderer(); //override menuStrip with our functions
             MenuStripFunctions.CreateEvents(menu); //creates onclick events on menu strip items
+            MenuStripFunctions.currentForm = this;
         }
     }
 }
