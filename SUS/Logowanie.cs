@@ -65,8 +65,9 @@ namespace SUS
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             // credentials check /w database
-            if (txtLogin.Text != "admin" && txtPassword.Text != "admin")
+            if (!Global.Login(txtLogin.Text, txtPassword.Text, out string err))
             {
+                wrongCredentials.Text = err;
                 wrongCredentials.Visible = true;
                 return;
             }
