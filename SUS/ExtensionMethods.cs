@@ -18,7 +18,7 @@ namespace SUS
             if (t == null)
                 throw new Exception("Couldnt find control of this type");
 
-            return Activator.CreateInstance(t);
+            return Activator.CreateInstance(t)!;
         }
         public static void SwitchForm(this Form form, Form newForm) 
         {
