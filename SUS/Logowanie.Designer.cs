@@ -87,6 +87,7 @@
             this.txtPassword.Location = new System.Drawing.Point(53, 123);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
+            this.txtPassword.PlaceholderText = "Hasło";
             this.txtPassword.Size = new System.Drawing.Size(150, 16);
             this.txtPassword.TabIndex = 1;
             this.txtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -98,6 +99,7 @@
             this.txtLogin.ForeColor = System.Drawing.Color.White;
             this.txtLogin.Location = new System.Drawing.Point(53, 53);
             this.txtLogin.Name = "txtLogin";
+            this.txtLogin.PlaceholderText = "Login";
             this.txtLogin.Size = new System.Drawing.Size(150, 16);
             this.txtLogin.TabIndex = 0;
             this.txtLogin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -147,6 +149,7 @@
             this.MaximumSize = new System.Drawing.Size(600, 400);
             this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "Logowanie";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SUS : Logowanie";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

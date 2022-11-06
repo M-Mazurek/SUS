@@ -22,6 +22,7 @@ namespace SUS
         }
         public static void SwitchForm(this Form form, Form newForm) 
         {
+            MenuStripFunctions.currentForm = newForm;
             form.Hide();
             newForm.ShowDialog();
             form.Close();
