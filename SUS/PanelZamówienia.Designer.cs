@@ -43,7 +43,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.panelFilters.SuspendLayout();
-            this.panelOrders.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -126,12 +125,10 @@
             // 
             // panelOrders
             // 
-            this.panelOrders.AutoScroll = true;
             this.panelOrders.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
-            this.panelOrders.Controls.Add(this.panel1);
-            this.panelOrders.Location = new System.Drawing.Point(240, 29);
+            this.panelOrders.Location = new System.Drawing.Point(243, 60);
             this.panelOrders.Name = "panelOrders";
-            this.panelOrders.Size = new System.Drawing.Size(722, 520);
+            this.panelOrders.Size = new System.Drawing.Size(722, 490);
             this.panelOrders.TabIndex = 2;
             // 
             // panel1
@@ -141,8 +138,7 @@
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(243, 30);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(722, 30);
             this.panel1.TabIndex = 0;
@@ -197,6 +193,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ClientSize = new System.Drawing.Size(984, 561);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelOrders);
             this.Controls.Add(this.panelFilters);
             this.Controls.Add(this.menu1);
@@ -207,7 +204,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SUS : Zamówienia";
             this.panelFilters.ResumeLayout(false);
-            this.panelOrders.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

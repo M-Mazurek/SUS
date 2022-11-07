@@ -19,7 +19,12 @@ namespace SUS
         public PanelZamówienia()
         {
             InitializeComponent();
+            panelOrders.HorizontalScroll.Maximum = 0;
+            panelOrders.AutoScroll = false;
+            panelOrders.VerticalScroll.Visible = false;
+            panelOrders.AutoScroll = true;
             CreateCustomCombos();
+            CreateOrders();
         }
         private void CreateCustomCombos() 
         {
@@ -77,13 +82,42 @@ namespace SUS
             };
             panelFilters.Controls.Add(customComboState);
         }
+        private void CreateOrders() 
+        {
+            panelOrders.Controls.Clear();
+            int maxOrders = 20;
+            for(int i = 0; i < maxOrders; i++) 
+            {
+                Based based = new Based()
+                {
+                    Location = new(10, 10 + (10 * i) + (50 * i)),
+                };
+                if (i == maxOrders - 1)
+                    based.Size = new(based.Width, based.Height + 10);
+                foreach (Control c in based.Controls) 
+                {
+                    foreach (Label l in c.Controls)
+                    {
+                        l.Click += Based_Click;
+                        ExtensionMethods.ChangeName(l, new string[] { "nr_zam" + i.ToString(), "firma", "data", "status" }); // swaps label names to correct ones
+                    }
+                }
+                panelOrders.Controls.Add(based);
+            }
+        }
+
+        private void Based_Click(object? sender, EventArgs e)
+        {
+            // Open order detail
+            ExtensionMethods.SwitchForm(this, new SzczegółyZamówienia());
+        }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
             //Filter or smth
-            
+
             // call paint func
-            // 
+            CreateOrders();
         }
     }
 }
