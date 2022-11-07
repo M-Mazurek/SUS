@@ -40,6 +40,7 @@ namespace SUS
             CONN.Open();
         }
 
+        #region accounts
         public static bool Login(string login, string pass, out string err)
         {
             string cmdText = "SELECT pass, type FROM users WHERE login = @login";
@@ -96,5 +97,25 @@ namespace SUS
             err = "Zarejestrowano pomyślnie.";
             return true;
         }
+
+        public static void Logout() => _cu = ("", 0);
+
+        public static bool SetPass(string newPass)
+        {
+            try
+            {
+                string cmdText = "UPDATE users SET pass = @pass WHERE login = @login";
+                SqlCommand cmd = new(cmdText, CONN);
+                cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
+                cmd.Parameters["@login"].Value = CurrentUser.Login;
+                cmd.Parameters.Add("@pass", System.Data.SqlDbType.NVarChar, 50);
+                cmd.Parameters["@pass"].Value = newPass;
+
+                cmd.ExecuteNonQuery();
+            }
+            catch { return false; }
+            return true;
+        }
+        #endregion
     }
 }
