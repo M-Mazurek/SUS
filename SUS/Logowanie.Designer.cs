@@ -70,14 +70,14 @@
             // 
             // wrongCredentials
             // 
-            this.wrongCredentials.AutoSize = true;
             this.wrongCredentials.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.wrongCredentials.ForeColor = System.Drawing.Color.White;
-            this.wrongCredentials.Location = new System.Drawing.Point(73, 155);
+            this.wrongCredentials.Location = new System.Drawing.Point(0, 155);
             this.wrongCredentials.Name = "wrongCredentials";
-            this.wrongCredentials.Size = new System.Drawing.Size(111, 19);
+            this.wrongCredentials.Size = new System.Drawing.Size(253, 19);
             this.wrongCredentials.TabIndex = 4;
             this.wrongCredentials.Text = "Podałeś złe dane";
+            this.wrongCredentials.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtPassword
             // 
@@ -87,6 +87,7 @@
             this.txtPassword.Location = new System.Drawing.Point(53, 123);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
+            this.txtPassword.PlaceholderText = "Hasło";
             this.txtPassword.Size = new System.Drawing.Size(150, 16);
             this.txtPassword.TabIndex = 1;
             this.txtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -98,6 +99,7 @@
             this.txtLogin.ForeColor = System.Drawing.Color.White;
             this.txtLogin.Location = new System.Drawing.Point(53, 53);
             this.txtLogin.Name = "txtLogin";
+            this.txtLogin.PlaceholderText = "Login";
             this.txtLogin.Size = new System.Drawing.Size(150, 16);
             this.txtLogin.TabIndex = 0;
             this.txtLogin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -147,6 +149,7 @@
             this.MaximumSize = new System.Drawing.Size(600, 400);
             this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "Logowanie";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SUS : Logowanie";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
