@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelZamówienia));
             this.menu1 = new SUS.Menu();
             this.panelFilters = new System.Windows.Forms.Panel();
+            this.btnCreateOffer = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnFilter = new System.Windows.Forms.Button();
@@ -57,6 +58,7 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            this.panelFilters.Controls.Add(this.btnCreateOffer);
             this.panelFilters.Controls.Add(this.label4);
             this.panelFilters.Controls.Add(this.label3);
             this.panelFilters.Controls.Add(this.btnFilter);
@@ -66,6 +68,18 @@
             this.panelFilters.Name = "panelFilters";
             this.panelFilters.Size = new System.Drawing.Size(200, 520);
             this.panelFilters.TabIndex = 1;
+            // 
+            // btnCreateOffer
+            // 
+            this.btnCreateOffer.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCreateOffer.ForeColor = System.Drawing.Color.White;
+            this.btnCreateOffer.Location = new System.Drawing.Point(27, 478);
+            this.btnCreateOffer.Name = "btnCreateOffer";
+            this.btnCreateOffer.Size = new System.Drawing.Size(150, 30);
+            this.btnCreateOffer.TabIndex = 4;
+            this.btnCreateOffer.Text = "Utwórz ofertę";
+            this.btnCreateOffer.UseVisualStyleBackColor = true;
+            this.btnCreateOffer.Click += new System.EventHandler(this.btnCreateOffer_Click);
             // 
             // label4
             // 
@@ -93,7 +107,7 @@
             // 
             this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFilter.ForeColor = System.Drawing.Color.White;
-            this.btnFilter.Location = new System.Drawing.Point(27, 478);
+            this.btnFilter.Location = new System.Drawing.Point(27, 442);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(150, 30);
             this.btnFilter.TabIndex = 0;
@@ -224,5 +238,6 @@
         private Label label7;
         private Label label6;
         private Label label5;
+        private Button btnCreateOffer;
     }
 }

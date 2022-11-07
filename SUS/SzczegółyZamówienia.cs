@@ -23,12 +23,18 @@ namespace SUS
 
             txtCompany.Text = "Firma";
             txtDate.Text = "20.11.2022";
-            txtState.Text = "Oczekujace";
+            txtState.Text = "Oczekujące";
             txtOrderId.Text = "00002";
 
             lbSuma.Text = "Suma: 420000 zł";
 
             CreateOrders();
+
+            if (txtState.Text == "Oczekujące") 
+            {
+                btnConfirm.Visible = true;
+                txtState.Location = new(txtState.Location.X, 248);
+            }
         }
 
         private void CreateOrders() 
@@ -39,7 +45,7 @@ namespace SUS
             {
                 Based based = new Based()
                 {
-                    Location = new(10, 10 + (10 * i) + (50 * i)),
+                    Location = new(0, 10 + (10 * i) + (50 * i)),
                 };
                 if (i == maxOrders - 1)
                     based.Size = new(based.Width, based.Height + 50 - 10);
@@ -53,6 +59,26 @@ namespace SUS
                 }
                 panelOrders.Controls.Add(based);
             }
+        }
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            ExtensionMethods.SwitchForm(this, new PanelZamówienia());
+        }
+
+        private void btnPobierz_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnPodglad_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            // change order state to ready B)
+            ExtensionMethods.SwitchForm(this, new PanelZamówienia());
         }
     }
 }

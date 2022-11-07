@@ -90,7 +90,7 @@ namespace SUS
             {
                 Based based = new Based()
                 {
-                    Location = new(10, 10 + (10 * i) + (50 * i)),
+                    Location = new(0, 10 + (10 * i) + (50 * i)),
                 };
                 if (i == maxOrders - 1)
                     based.Size = new(based.Width, based.Height + 10);
@@ -118,6 +118,11 @@ namespace SUS
 
             // call paint func
             CreateOrders();
+        }
+
+        private void btnCreateOffer_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -31,6 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SzczegółyZamówienia));
             this.menu1 = new SUS.Menu();
             this.panelFilters = new System.Windows.Forms.Panel();
+            this.btnConfirm = new System.Windows.Forms.Button();
+            this.btnPodglad = new System.Windows.Forms.Button();
+            this.btnPobierz = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
             this.txtOrderId = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtState = new System.Windows.Forms.TextBox();
@@ -47,7 +51,6 @@
             this.lbTowar = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lbSuma = new System.Windows.Forms.Label();
-            this.btnFilter = new System.Windows.Forms.Button();
             this.panelFilters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -64,7 +67,10 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
-            this.panelFilters.Controls.Add(this.btnFilter);
+            this.panelFilters.Controls.Add(this.btnConfirm);
+            this.panelFilters.Controls.Add(this.btnPodglad);
+            this.panelFilters.Controls.Add(this.btnPobierz);
+            this.panelFilters.Controls.Add(this.btnBack);
             this.panelFilters.Controls.Add(this.txtOrderId);
             this.panelFilters.Controls.Add(this.label2);
             this.panelFilters.Controls.Add(this.txtState);
@@ -78,10 +84,60 @@
             this.panelFilters.Size = new System.Drawing.Size(200, 520);
             this.panelFilters.TabIndex = 2;
             // 
+            // btnConfirm
+            // 
+            this.btnConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnConfirm.ForeColor = System.Drawing.Color.White;
+            this.btnConfirm.Location = new System.Drawing.Point(27, 277);
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.Size = new System.Drawing.Size(150, 30);
+            this.btnConfirm.TabIndex = 12;
+            this.btnConfirm.Text = "Potwierdź";
+            this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnConfirm.Visible = false;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
+            // 
+            // btnPodglad
+            // 
+            this.btnPodglad.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPodglad.ForeColor = System.Drawing.Color.White;
+            this.btnPodglad.Location = new System.Drawing.Point(27, 403);
+            this.btnPodglad.Name = "btnPodglad";
+            this.btnPodglad.Size = new System.Drawing.Size(150, 30);
+            this.btnPodglad.TabIndex = 11;
+            this.btnPodglad.Text = "Podgląd faktury";
+            this.btnPodglad.UseVisualStyleBackColor = true;
+            this.btnPodglad.Click += new System.EventHandler(this.btnPodglad_Click);
+            // 
+            // btnPobierz
+            // 
+            this.btnPobierz.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPobierz.ForeColor = System.Drawing.Color.White;
+            this.btnPobierz.Location = new System.Drawing.Point(27, 439);
+            this.btnPobierz.Name = "btnPobierz";
+            this.btnPobierz.Size = new System.Drawing.Size(150, 30);
+            this.btnPobierz.TabIndex = 10;
+            this.btnPobierz.Text = "Pobierz fakturę";
+            this.btnPobierz.UseVisualStyleBackColor = true;
+            this.btnPobierz.Click += new System.EventHandler(this.btnPobierz_Click);
+            // 
+            // btnBack
+            // 
+            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnBack.ForeColor = System.Drawing.Color.White;
+            this.btnBack.Location = new System.Drawing.Point(27, 475);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(150, 30);
+            this.btnBack.TabIndex = 9;
+            this.btnBack.Text = "Powrót";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // txtOrderId
             // 
             this.txtOrderId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.txtOrderId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtOrderId.Enabled = false;
             this.txtOrderId.ForeColor = System.Drawing.Color.White;
             this.txtOrderId.Location = new System.Drawing.Point(15, 358);
             this.txtOrderId.Name = "txtOrderId";
@@ -104,6 +160,7 @@
             // 
             this.txtState.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.txtState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtState.Enabled = false;
             this.txtState.ForeColor = System.Drawing.Color.White;
             this.txtState.Location = new System.Drawing.Point(15, 258);
             this.txtState.Name = "txtState";
@@ -115,6 +172,7 @@
             // 
             this.txtDate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.txtDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDate.Enabled = false;
             this.txtDate.ForeColor = System.Drawing.Color.White;
             this.txtDate.Location = new System.Drawing.Point(15, 158);
             this.txtDate.Name = "txtDate";
@@ -126,6 +184,7 @@
             // 
             this.txtCompany.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.txtCompany.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCompany.Enabled = false;
             this.txtCompany.ForeColor = System.Drawing.Color.White;
             this.txtCompany.Location = new System.Drawing.Point(15, 58);
             this.txtCompany.Name = "txtCompany";
@@ -251,17 +310,6 @@
             this.lbSuma.Text = "Suma:";
             this.lbSuma.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // btnFilter
-            // 
-            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnFilter.ForeColor = System.Drawing.Color.White;
-            this.btnFilter.Location = new System.Drawing.Point(27, 475);
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(150, 30);
-            this.btnFilter.TabIndex = 9;
-            this.btnFilter.Text = "Filtruj";
-            this.btnFilter.UseVisualStyleBackColor = true;
-            // 
             // SzczegółyZamówienia
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -307,6 +355,9 @@
         private Label label2;
         private Panel panel2;
         private Label lbSuma;
-        private Button btnFilter;
+        private Button btnBack;
+        private Button btnPodglad;
+        private Button btnPobierz;
+        private Button btnConfirm;
     }
 }
