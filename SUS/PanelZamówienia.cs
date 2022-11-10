@@ -99,7 +99,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         l.Click += Based_Click;
-                        ExtensionMethods.ChangeName(l, new string[] { "nr_zam" + i.ToString(), "firma", "data", "status" }); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { "nr_zam" + i.ToString(), "firma", "data", "status" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
@@ -122,7 +122,7 @@ namespace SUS
 
         private void btnCreateOffer_Click(object sender, EventArgs e)
         {
-
+            ExtensionMethods.SwitchForm(this, new StwórzZamówienie());
         }
     }
 }

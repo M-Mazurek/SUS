@@ -40,7 +40,7 @@ namespace SUS
         private void CreateOrders() 
         {
             panelOrders.Controls.Clear();
-            int maxOrders = 20;
+            int maxOrders = 5;
             for (int i = 0; i < maxOrders; i++)
             {
                 Based based = new Based()
@@ -54,11 +54,16 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { "towar" + i.ToString(), "420 zł", "999", "99999 zł" }); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { "towar" + i.ToString(), "10 zł", $"{2 * (i + 1)}", $"0 zł" }, true); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
             }
+            UpdateSum();
+        }
+        private void UpdateSum() 
+        {
+            lbSuma.Text = $"Suma: {ExtensionMethods.GetSum(panelOrders)} zł";
         }
         private void btnBack_Click(object sender, EventArgs e)
         {

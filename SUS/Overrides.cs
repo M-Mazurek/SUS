@@ -226,4 +226,74 @@ namespace SUS
                 base.WndProc(ref m);
         }
     }
+    class CustomNumericUpDown : NumericUpDown 
+    {
+        public CustomNumericUpDown() 
+        {
+            Controls[0].Hide();
+        }
+        protected override void OnTextBoxResize(object source, EventArgs e)
+        {
+            Controls[1].Width = Width + 4;
+            //base.OnTextBoxResize(source, e);
+        }
+        public static void SetValue(Panel startPanel, int value) 
+        {
+            foreach (Control based in startPanel.Controls)
+            {
+                if (based.GetType() != typeof(Based))
+                    continue;
+
+                foreach (Control panel in ((Based)based).Controls)
+                {
+                    if (panel.GetType() != typeof(Panel))
+                        continue;
+
+                    foreach (Control label in ((Panel)panel).Controls)
+                    {
+                        if (label.GetType() != typeof(Label))
+                            continue;
+
+                        if (label.Name != "label3")
+                            continue;
+
+                        foreach (CustomNumericUpDown cn in ((Label)label).Controls)
+                        {
+                            cn.Value = value;
+                        }
+                    }
+                }
+            }
+        }
+        public static List<decimal> GetValues(Panel startPanel)
+        {
+            List<decimal> temp = new List<decimal>();
+            foreach (Control based in startPanel.Controls)
+            {
+                if (based.GetType() != typeof(Based))
+                    continue;
+
+                foreach (Control panel in ((Based)based).Controls)
+                {
+                    if (panel.GetType() != typeof(Panel))
+                        continue;
+
+                    foreach (Control label in ((Panel)panel).Controls)
+                    {
+                        if (label.GetType() != typeof(Label))
+                            continue;
+
+                        if (label.Name != "label3")
+                            continue;
+
+                        foreach (CustomNumericUpDown cn in ((Label)label).Controls)
+                        {
+                            temp.Add(cn.Value);
+                        }
+                    }
+                }
+            }
+            return temp;
+        }
+    }
 }
