@@ -45,11 +45,9 @@ namespace SUS
             }
         }
 
-        private delegate IntPtr LowLevelKeyboardProc(
-            int nCode, IntPtr wParam, IntPtr lParam);
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        private static IntPtr HookCallback(
-            int nCode, IntPtr wParam, IntPtr lParam)
+        private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
             {
@@ -61,7 +59,11 @@ namespace SUS
                         DebugConsole.Instance.Hide();
                         return (IntPtr)1;
                     }
-                    DebugConsole.Instance.Show();
+                    try
+                    {
+                        DebugConsole.Instance.ShowDialog();
+                    }
+                    catch { }
                     return (IntPtr)1;
                 }
             }

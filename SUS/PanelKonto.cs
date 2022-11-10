@@ -56,7 +56,7 @@ namespace SUS
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            //delete account information ??
+            Global.Logout();
             ExtensionMethods.SwitchForm(this, new Logowanie());
         }
 

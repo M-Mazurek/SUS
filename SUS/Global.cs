@@ -7,26 +7,14 @@ using System.Threading.Tasks;
 
 namespace SUS
 {
+    public record struct Seller(int Id, string Name);
+    public record struct Ware(int Id, string Name, int SellerId, float Price);
     public static class Global
     {
         readonly static string DIR;
         readonly static SqlConnection CONN;
 
-
-        private static (string l, byte t) _cu = ("", 0);
-        public static (string Login, byte Type) CurrentUser
-        {
-            get
-            {
-                return _cu;
-            }
-            set
-            {
-                if (_cu is ("", 0))
-                    return;
-                _cu = value;
-            }
-        }
+        public static (string Login, byte Type) CurrentUser { get; private set; }
 
         public static void Init() { /* nie zadajemy pytań ok? */ }
 
@@ -43,7 +31,7 @@ namespace SUS
         #region accounts
         public static bool Login(string login, string pass, out string err)
         {
-            string cmdText = "SELECT pass, type FROM users WHERE login = @login";
+            string cmdText = "SELECT pass, type FROM users WHERE login LIKE @login";
             SqlCommand cmd = new(cmdText, CONN);
             cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
             cmd.Parameters["@login"].Value = login;
@@ -63,16 +51,31 @@ namespace SUS
                 return false;
             }
 
-            err = "";
+            err = String.Empty;
             CurrentUser = (login, (byte)reader["type"]);
-
             reader.Close();
             return true;
         }
 
         public static bool Register(string login, string pass, int type, out string err)
         {
-            string cmdText = "SELECT type FROM users WHERE login = @login";
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                err = "Login nie może być pusty.";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(pass))
+            {
+                err = "Hasło nie może być puste.";
+                return false;
+            }
+            if (type > 2 || type < 0)
+            {
+                err = "Typ może przyjmować tylko wartości 0, 1 lub 2.";
+                return false;
+            }
+
+            string cmdText = "SELECT type FROM users WHERE login LIKE @login";
             SqlCommand cmd = new(cmdText, CONN);
             cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
             cmd.Parameters["@login"].Value = login;
@@ -94,27 +97,146 @@ namespace SUS
 
             _cmd.ExecuteNonQuery();
 
-            err = "Zarejestrowano pomyślnie.";
+            err = String.Empty;
             return true;
         }
 
-        public static void Logout() => _cu = ("", 0);
+        public static void Logout() => CurrentUser = ("", 0);
 
-        public static bool SetPass(string newPass)
+        public static bool SetPass(string newPass, out string err)
         {
-            try
+            if (CurrentUser == ("", 0))
             {
-                string cmdText = "UPDATE users SET pass = @pass WHERE login = @login";
-                SqlCommand cmd = new(cmdText, CONN);
-                cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
-                cmd.Parameters["@login"].Value = CurrentUser.Login;
-                cmd.Parameters.Add("@pass", System.Data.SqlDbType.NVarChar, 50);
-                cmd.Parameters["@pass"].Value = newPass;
-
-                cmd.ExecuteNonQuery();
+                err = "Musisz być zalogowany aby użyć tej komendy.";
+                return false;
             }
-            catch { return false; }
+
+            string cmdText = "UPDATE users SET pass = @pass WHERE login LIKE @login";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@login"].Value = CurrentUser.Login;
+            cmd.Parameters.Add("@pass", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@pass"].Value = newPass;
+
+            err = String.Empty;
+            return cmd.ExecuteNonQuery() == 1;
+        }
+        #endregion
+
+        #region wares
+        public static bool AddSeller(string name, out string err)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                err = "Nazwa nie może być pusta.";
+                return false;
+            }
+
+            string cmdText = "SELECT name FROM sellers WHERE name LIKE @name";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@name", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@name"].Value = name;
+
+            if (cmd.ExecuteScalar() is not null)
+            {
+                err = "Firma o podanej nazwie już istnieje.";
+                return false;
+            }
+
+            string _cmdText = "INSERT INTO sellers (name) VALUES (@name)";
+            SqlCommand _cmd = new(_cmdText, CONN);
+            _cmd.Parameters.Add("@name", System.Data.SqlDbType.NVarChar, 50);
+            _cmd.Parameters["@name"].Value = name;
+            _cmd.ExecuteNonQuery();
+
+            err = String.Empty;
             return true;
+        }
+
+        public static Seller[] GetSellers()
+        {
+            List<Seller> sellers = new();
+            string cmdText = "SELECT * FROM sellers";
+            SqlCommand cmd = new(cmdText, CONN);
+
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                MessageBox.Show(reader[0] + " " + (string)reader[1]);
+                sellers.Add(new((int)reader[0], (string)reader[1]));
+            }
+            reader.Close();
+
+            return sellers.ToArray();
+        }
+
+        public static bool AddWare(string name, float price, int sellerId, out string err)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                err = "Nazwa nie może być pusta.";
+                return false;
+            }
+            if (price < 0)
+            {
+                err = "Cena towaru nie może być ujemna.";
+                return false;
+            }
+
+            string cmdText = "SELECT name FROM wares WHERE name LIKE @name AND seller_id = @seller_id";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@name", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@name"].Value = name;
+            cmd.Parameters.Add("@seller_id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@seller_id"].Value = sellerId;
+
+            if (cmd.ExecuteScalar() is not null)
+            {
+                err = "Firma już posiada towar o podanej nazwie.";
+                return false;
+            }
+
+            string _cmdText = "SELECT id FROM sellers WHERE id = @seller_id";
+            SqlCommand _cmd = new(_cmdText, CONN);
+            _cmd.Parameters.Add("@seller_id", System.Data.SqlDbType.Int);
+            _cmd.Parameters["@seller_id"].Value = sellerId;
+
+            if (_cmd.ExecuteScalar() is null)
+            {
+                err = "Firma o podanym id nie istnieje.";
+                return false;
+            }
+
+            string __cmdText = "INSERT INTO wares (name, seller_id, price) VALUES (@name, @seller_id, @price)";
+            SqlCommand __cmd = new(__cmdText, CONN);
+            __cmd.Parameters.Add("@name", System.Data.SqlDbType.NVarChar, 50);
+            __cmd.Parameters["@name"].Value = name;
+            __cmd.Parameters.Add("@seller_id", System.Data.SqlDbType.Int);
+            __cmd.Parameters["@seller_id"].Value = sellerId;
+            __cmd.Parameters.Add("@price", System.Data.SqlDbType.Float);
+            __cmd.Parameters["@price"].Value = price;
+            __cmd.ExecuteNonQuery();
+
+            err = String.Empty;
+            return true;
+        }
+
+        public static Ware[] GetWaresFrom(int sellerId)
+        {
+            List<Ware> wares = new();
+            string cmdText = "SELECT id, name, price FROM wares WHERE seller_id = @seller_id";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@seller_id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@seller_id"].Value = sellerId;
+            var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                wares.Add(new((int)reader[0], (string)reader[1], sellerId, Convert.ToSingle(reader[2])));
+            }
+            reader.Close();
+
+            return wares.ToArray();
         }
         #endregion
     }
