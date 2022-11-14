@@ -78,7 +78,6 @@ namespace SUS
                             cn.ValueChanged += Cn_ValueChanged;
                             l.Controls.Add(cn);
                         }
-                        
                     }
                 }
                 panelOrders.Controls.Add(based);

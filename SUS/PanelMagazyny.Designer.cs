@@ -169,7 +169,7 @@
             this.txtTowar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.txtTowar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTowar.ForeColor = System.Drawing.Color.White;
-            this.txtTowar.Location = new System.Drawing.Point(15, 58);
+            this.txtTowar.Location = new System.Drawing.Point(15, 45);
             this.txtTowar.Name = "txtTowar";
             this.txtTowar.Size = new System.Drawing.Size(170, 23);
             this.txtTowar.TabIndex = 15;

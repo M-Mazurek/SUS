@@ -12,7 +12,7 @@ namespace SUS
 {
     public partial class SzczegółyZamówienia : Form
     {
-        public SzczegółyZamówienia()
+        public SzczegółyZamówienia(string company, string date, string state, string orderId)
         {
             InitializeComponent();
 
@@ -21,12 +21,12 @@ namespace SUS
             panelOrders.VerticalScroll.Visible = false;
             panelOrders.AutoScroll = true;
 
-            txtCompany.Text = "Firma";
-            txtDate.Text = "20.11.2022";
-            txtState.Text = "Oczekujące";
-            txtOrderId.Text = "00002";
+            txtCompany.Text = company;
+            txtDate.Text = date;
+            txtState.Text = state;
+            txtOrderId.Text = orderId;
 
-            lbSuma.Text = "Suma: 420000 zł";
+            lbSuma.Text = "Suma: 0 zł";
 
             CreateOrders();
 

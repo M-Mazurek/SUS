@@ -99,7 +99,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         l.Click += Based_Click;
-                        ExtensionMethods.ChangeName(l, new string[] { "nr_zam" + i.ToString(), "firma", "data", "status" }, false); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"nr_zam{i}", "firma", "data", "status" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
@@ -108,8 +108,13 @@ namespace SUS
 
         private void Based_Click(object? sender, EventArgs e)
         {
+            List<string> list = new List<string>();
             // Open order detail
-            ExtensionMethods.SwitchForm(this, new SzczegółyZamówienia());
+            foreach (Label l in ((Label)sender!).Parent.Controls.OfType<Label>().OrderBy(x => x.Name))
+            {
+                list.Add(l.Text);
+            }
+            ExtensionMethods.SwitchForm(this, new SzczegółyZamówienia(list[0], list[1], list[2], list[3]));
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
