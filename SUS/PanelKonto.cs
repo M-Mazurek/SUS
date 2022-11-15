@@ -45,7 +45,7 @@ namespace SUS
                 Location = new(50, 30),
                 Size = new(150, 23),
                 BackColor = Color.FromArgb(60, 60, 60),
-                OuterBorderColor = Color.DimGray,
+                OuterBorderColor = Color.DimGray, //Color.FromArgb(99, 212, 113)
                 InnerBorderColor = BackColor,
                 ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
                 ForeColor = Color.White,

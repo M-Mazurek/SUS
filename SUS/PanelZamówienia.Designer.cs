@@ -71,7 +71,8 @@
             // 
             // btnCreateOffer
             // 
-            this.btnCreateOffer.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCreateOffer.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnCreateOffer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCreateOffer.ForeColor = System.Drawing.Color.White;
             this.btnCreateOffer.Location = new System.Drawing.Point(27, 478);
             this.btnCreateOffer.Name = "btnCreateOffer";
@@ -105,7 +106,8 @@
             // 
             // btnFilter
             // 
-            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFilter.ForeColor = System.Drawing.Color.White;
             this.btnFilter.Location = new System.Drawing.Point(27, 442);
             this.btnFilter.Name = "btnFilter";
