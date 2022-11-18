@@ -136,7 +136,8 @@
             // 
             // btnAddAcc
             // 
-            this.btnAddAcc.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAddAcc.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnAddAcc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddAcc.ForeColor = System.Drawing.Color.White;
             this.btnAddAcc.Location = new System.Drawing.Point(320, 88);
             this.btnAddAcc.Name = "btnAddAcc";
@@ -161,7 +162,8 @@
             // 
             // btnDeleteAcc
             // 
-            this.btnDeleteAcc.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnDeleteAcc.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnDeleteAcc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDeleteAcc.ForeColor = System.Drawing.Color.White;
             this.btnDeleteAcc.Location = new System.Drawing.Point(130, 88);
             this.btnDeleteAcc.Name = "btnDeleteAcc";
@@ -195,7 +197,8 @@
             // 
             // btnLogout
             // 
-            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnLogout.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.ForeColor = System.Drawing.Color.White;
             this.btnLogout.Location = new System.Drawing.Point(20, 88);
             this.btnLogout.Name = "btnLogout";
@@ -231,7 +234,8 @@
             // 
             // btnChangePass
             // 
-            this.btnChangePass.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnChangePass.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnChangePass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnChangePass.ForeColor = System.Drawing.Color.White;
             this.btnChangePass.Location = new System.Drawing.Point(50, 88);
             this.btnChangePass.Name = "btnChangePass";

@@ -37,9 +37,9 @@
             this.lbNrKorekty = new System.Windows.Forms.Label();
             this.panelOrders = new System.Windows.Forms.Panel();
             this.panelFilters = new System.Windows.Forms.Panel();
+            this.txtTowar = new System.Windows.Forms.TextBox();
             this.btnCreate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtTowar = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panelFilters.SuspendLayout();
             this.SuspendLayout();
@@ -127,9 +127,22 @@
             this.panelFilters.Size = new System.Drawing.Size(200, 520);
             this.panelFilters.TabIndex = 5;
             // 
+            // txtTowar
+            // 
+            this.txtTowar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.txtTowar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTowar.ForeColor = System.Drawing.Color.White;
+            this.txtTowar.Location = new System.Drawing.Point(15, 45);
+            this.txtTowar.Name = "txtTowar";
+            this.txtTowar.Size = new System.Drawing.Size(170, 23);
+            this.txtTowar.TabIndex = 16;
+            this.txtTowar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTowar.TextChanged += new System.EventHandler(this.txtTowar_TextChanged);
+            // 
             // btnCreate
             // 
-            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCreate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCreate.ForeColor = System.Drawing.Color.White;
             this.btnCreate.Location = new System.Drawing.Point(27, 478);
             this.btnCreate.Name = "btnCreate";
@@ -148,18 +161,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Numer zamówienia";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtTowar
-            // 
-            this.txtTowar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.txtTowar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTowar.ForeColor = System.Drawing.Color.White;
-            this.txtTowar.Location = new System.Drawing.Point(15, 45);
-            this.txtTowar.Name = "txtTowar";
-            this.txtTowar.Size = new System.Drawing.Size(170, 23);
-            this.txtTowar.TabIndex = 16;
-            this.txtTowar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtTowar.TextChanged += new System.EventHandler(this.txtTowar_TextChanged);
             // 
             // PanelKorekty
             // 
