@@ -22,6 +22,7 @@ namespace SUS
             panelOrders.AutoScroll = true;
 
             CreateOrders();
+            ExtensionMethods.StartAnim(this);
         }
         private void CreateOrders()
         {

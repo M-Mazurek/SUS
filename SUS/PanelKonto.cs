@@ -17,8 +17,7 @@ namespace SUS
         public PanelKonto()
         {
             InitializeComponent();
-
-            lbCurrentAcc.Text = "admin"; // change with current account login name
+            lbCurrentAcc.Text = Global.CurrentUser.Login; // change with current account login name
 
             panelCreateAcc.Visible = false;
             lbCreateAcc.Visible = false;
@@ -28,6 +27,7 @@ namespace SUS
             Size = new(600, 285);
 
             CreateAdminOptions();
+            ExtensionMethods.StartAnim(this);
         }
 
         private void CreateAdminOptions()
@@ -63,46 +63,81 @@ namespace SUS
         private void btnChangePass_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrWhiteSpace(txtOldPass.Text) || String.IsNullOrWhiteSpace(txtNewPass.Text))
+            {
+                MessageBox.Show($"Błąd przy zmianie hasła. Błąd:\nNie wpisane dane.", "Błąd", MessageBoxButtons.OK);
                 return;
+            }
 
-            if (txtOldPass.Text != "admin") // change "admin" with account password from database
+            if (txtOldPass.Text != Global.GetPass(Global.CurrentUser.Login)) // wrong old password
+            {
+                MessageBox.Show($"Błąd przy zmianie hasła. Błąd:\nNiepoprawne stare hasło.", "Błąd", MessageBoxButtons.OK);
                 return;
+            }
 
             if (txtOldPass.Text == txtNewPass.Text) // same password dont change
+            {
+                MessageBox.Show($"Błąd przy zmianie hasła. Błąd:\nHasła są jednakowe.", "Błąd", MessageBoxButtons.OK);
                 return;
-            
+            }
+
             //txtNewPass.Text; // set account pass to new value
+            string error;
+            if (!Global.SetPass(txtNewPass.Text, out error)) 
+            {
+                MessageBox.Show($"Błąd przy zmianie hasła. Błąd:\n{error}", "Błąd", MessageBoxButtons.OK);
+                return;
+            }
+
             MessageBox.Show("Pomyślnie zmieniono hasło.", "Zmieniono Hasło", MessageBoxButtons.OK);
         }
 
         private void btnAddAcc_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(txtNewAccLogin.Text) || String.IsNullOrWhiteSpace(txtNewAccPass.Text))
+            if (String.IsNullOrWhiteSpace(txtNewAccLogin.Text) || String.IsNullOrWhiteSpace(txtNewAccPass.Text)) 
+            {
+                MessageBox.Show($"Błąd przy tworzeniu konta. Błąd:\nNie wpisane dane.", "Błąd", MessageBoxButtons.OK);
                 return;
+            }
 
-            if (txtNewAccLogin.Text == "admin") // database check if has this user
+            if (Global.HasUser(txtNewAccLogin.Text)) // database check if has this user
+            {
+                MessageBox.Show($"Błąd przy tworzeniu konta. Błąd:\nUżytkownik o takim loginie już istnieje.", "Błąd", MessageBoxButtons.OK);
                 return;
+            }
 
-            if (customCombo!.SelectedItem == null)
+            if (customCombo!.SelectedItem == null) 
+            {
+                MessageBox.Show($"Błąd przy tworzeniu konta. Błąd:\nNie wybrano typu konta.", "Błąd", MessageBoxButtons.OK);
                 return;
+            }
 
-            if (MessageBox.Show($"Czy napewno chcesz utworzyć konto '{customCombo.SelectedItem}' o loginie '{txtNewAccLogin.Text}'?", "Utwórz konto", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show($"Czy napewno chcesz utworzyć konto typu '{customCombo.SelectedItem}' o loginie '{txtNewAccLogin.Text}'?", "Utwórz konto", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             // add account to database
+            string error;
+            if (!Global.Register(txtNewAccLogin.Text, txtNewAccPass.Text, customCombo.SelectedIndex, out error))
+            {
+                MessageBox.Show($"Błąd przy tworzeniu hasła. Błąd:\n{error}", "Błąd", MessageBoxButtons.OK);
+                return;
+            }
             MessageBox.Show($"Pomyślnie utworzono konto '{customCombo.SelectedItem}' o loginie '{txtNewAccLogin.Text}'.", "Utworzono konto", MessageBoxButtons.OK);
         }
 
         private void btnDeleteAcc_Click(object sender, EventArgs e)
         {
-            if (lbCurrentAcc.Text == "admin") // keep admin safe )
+            if (lbCurrentAcc.Text == "admin") // keep admin safe ){}
+            {
+                MessageBox.Show($"Błąd przy usuwaniu konta. Błąd:\nNie możesz usunąć podstawowego konta.", "Błąd", MessageBoxButtons.OK);
                 return;
+            }
 
-            if (MessageBox.Show($"Czy napewno chcesz usunąć konto 'ADMIN' o loginie '{lbCurrentAcc.Text}'?", "Usuń konto", MessageBoxButtons.YesNo) == DialogResult.No) // change 'ADMIN' with current account type
+            if (MessageBox.Show($"Czy napewno chcesz usunąć konto o typie '{Global.CurrentUser.Type}' o loginie '{Global.CurrentUser.Login}'?", "Usuń konto", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             // delete account from database
-            MessageBox.Show($"Pomyślnie usunięto konto 'ADMIN' o loginie '{lbCurrentAcc.Text}'.", "Usunięto konto", MessageBoxButtons.OK);
+            Global.DeleteUser(Global.CurrentUser.Login);
+            MessageBox.Show($"Pomyślnie usunięto konto o typie '{Global.CurrentUser.Type}' o loginie '{Global.CurrentUser.Login}'.", "Usunięto konto", MessageBoxButtons.OK);
             ExtensionMethods.SwitchForm(this, new Logowanie());
         }
     }

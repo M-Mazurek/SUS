@@ -13,8 +13,6 @@ namespace SUS
     public partial class PanelZamówienia : Form
     {
         private CustomCombo? customComboCompanies;
-        private CustomCombo? customComboDateStart;
-        private CustomCombo? customComboDateEnd;
         private CustomCombo? customComboState;
         public PanelZamówienia()
         {
@@ -25,6 +23,7 @@ namespace SUS
             panelOrders.AutoScroll = true;
             CreateCustomCombos();
             CreateOrders();
+            ExtensionMethods.StartAnim(this);
         }
         private void CreateCustomCombos() 
         {
@@ -39,35 +38,10 @@ namespace SUS
                 InnerBorderColor = BackColor,
                 ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
                 ForeColor = Color.White,
-                Items = { "Firma1", "Firma2", "Firma3" }, // viable companies
             };
+            customComboCompanies.Items.AddRange(Global.GetSellers().Select(x => x.Name).ToArray()); // viable companies
             panelFilters.Controls.Add(customComboCompanies);
-            customComboDateStart = new CustomCombo()
-            {
-                Name = "dateStart",
-                Location = new(10, 145),
-                Size = new(180, 23),
-                BackColor = Color.FromArgb(60, 60, 60),
-                OuterBorderColor = Color.DimGray,
-                InnerBorderColor = BackColor,
-                ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
-                ForeColor = Color.White,
-                Items = { "19.10.2022", "20.10.2022", "21.10.2022" }, // viable dates
-            };
-            panelFilters.Controls.Add(customComboDateStart);
-            customComboDateEnd = new CustomCombo()
-            {
-                Name = "dateEnd",
-                Location = new(10, 245),
-                Size = new(180, 23),
-                BackColor = Color.FromArgb(60, 60, 60),
-                OuterBorderColor = Color.DimGray,
-                InnerBorderColor = BackColor,
-                ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
-                ForeColor = Color.White,
-                Items = { "19.10.2022", "20.10.2022", "21.10.2022" }, // viable dates
-            };
-            panelFilters.Controls.Add(customComboDateEnd);
+
             customComboState = new CustomCombo()
             {
                 Name = "orderState",
@@ -82,10 +56,20 @@ namespace SUS
             };
             panelFilters.Controls.Add(customComboState);
         }
-        private void CreateOrders() 
+        private void CreateOrders()
         {
             panelOrders.Controls.Clear();
-            int maxOrders = 20;
+
+            //list is ghetto B)
+            List<Ware> wares = new List<Ware>();
+            if (customComboCompanies!.SelectedIndex != -1)
+            {
+                List<int> currentCompanyId = new List<int>(Global.GetSellers().Where(e => e.Name == (string)customComboCompanies.SelectedItem!).Select(x => x.Id).ToArray());
+                //currentCompanyId.ForEach(e => MessageBox.Show($"Current Picked Id: {e}"));
+                wares = new List<Ware>(Global.GetWaresFrom(currentCompanyId.First()));
+            }
+
+            int maxOrders = wares.Count;
             for(int i = 0; i < maxOrders; i++) 
             {
                 Based based = new Based()
@@ -99,7 +83,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         l.Click += Based_Click;
-                        ExtensionMethods.ChangeName(l, new string[] { $"nr_zam{i}", "firma", "data", "status" }, false); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"nr_zam{i}", $"{customComboCompanies.SelectedItem}", $"data", $"status" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);

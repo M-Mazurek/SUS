@@ -68,12 +68,12 @@
             this.lbSuma.Dock = System.Windows.Forms.DockStyle.Right;
             this.lbSuma.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lbSuma.ForeColor = System.Drawing.Color.White;
-            this.lbSuma.Location = new System.Drawing.Point(582, 0);
+            this.lbSuma.Location = new System.Drawing.Point(0, 0);
             this.lbSuma.Name = "lbSuma";
-            this.lbSuma.Size = new System.Drawing.Size(140, 30);
+            this.lbSuma.Size = new System.Drawing.Size(722, 30);
             this.lbSuma.TabIndex = 0;
             this.lbSuma.Text = "Suma:";
-            this.lbSuma.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbSuma.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // panel1
             // 

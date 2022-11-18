@@ -36,9 +36,7 @@
             this.txtLogin = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.backgroundPicture = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.backgroundPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // btnConfirm
@@ -127,17 +125,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Login";
             // 
-            // backgroundPicture
-            // 
-            this.backgroundPicture.BackColor = System.Drawing.Color.Transparent;
-            this.backgroundPicture.Image = ((System.Drawing.Image)(resources.GetObject("backgroundPicture.Image")));
-            this.backgroundPicture.Location = new System.Drawing.Point(44, 101);
-            this.backgroundPicture.Name = "backgroundPicture";
-            this.backgroundPicture.Size = new System.Drawing.Size(46, 54);
-            this.backgroundPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.backgroundPicture.TabIndex = 3;
-            this.backgroundPicture.TabStop = false;
-            // 
             // Logowanie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -145,7 +132,6 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ClientSize = new System.Drawing.Size(584, 361);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.backgroundPicture);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(600, 400);
             this.MinimumSize = new System.Drawing.Size(600, 400);
@@ -154,7 +140,6 @@
             this.Text = "SUS : Logowanie";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.backgroundPicture)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -166,7 +151,6 @@
         private TextBox txtLogin;
         private Label label2;
         private Label label1;
-        private PictureBox backgroundPicture;
         private Label wrongCredentials;
     }
 }

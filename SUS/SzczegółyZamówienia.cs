@@ -35,6 +35,7 @@ namespace SUS
                 btnConfirm.Visible = true;
                 txtState.Location = new(txtState.Location.X, 248);
             }
+            ExtensionMethods.StartAnim(this);
         }
 
         private void CreateOrders() 

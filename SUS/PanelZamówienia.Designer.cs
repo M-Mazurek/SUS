@@ -43,6 +43,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.panelFilters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -58,6 +60,8 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            this.panelFilters.Controls.Add(this.dateTimePicker1);
+            this.panelFilters.Controls.Add(this.dtpStart);
             this.panelFilters.Controls.Add(this.btnCreateOffer);
             this.panelFilters.Controls.Add(this.label4);
             this.panelFilters.Controls.Add(this.label3);
@@ -203,6 +207,22 @@
             this.label5.Text = "Numer Zamówienia";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // dtpStart
+            // 
+            this.dtpStart.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dtpStart.Location = new System.Drawing.Point(0, 160);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(200, 23);
+            this.dtpStart.TabIndex = 5;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dateTimePicker1.Location = new System.Drawing.Point(0, 260);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 23);
+            this.dateTimePicker1.TabIndex = 6;
+            // 
             // PanelZamówienia
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -241,5 +261,7 @@
         private Label label6;
         private Label label5;
         private Button btnCreateOffer;
+        private DateTimePicker dtpStart;
+        private DateTimePicker dateTimePicker1;
     }
 }

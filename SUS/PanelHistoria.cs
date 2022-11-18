@@ -21,6 +21,7 @@ namespace SUS
             panelOrders.VerticalScroll.Visible = false;
             panelOrders.AutoScroll = true;
 
+            ExtensionMethods.StartAnim(this);
         }
 
         private void btnClearHistory_Click(object sender, EventArgs e)

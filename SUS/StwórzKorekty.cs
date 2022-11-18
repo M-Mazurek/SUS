@@ -38,6 +38,7 @@ namespace SUS
             panelFilters.Controls.Add(customComboCompanies);
 
             CreateOrders();
+            ExtensionMethods.StartAnim(this);
         }
         private void CreateOrders()
         {

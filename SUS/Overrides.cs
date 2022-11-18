@@ -12,7 +12,7 @@ namespace SUS
 {
     class MenuStripFunctions 
     {
-        public static Form? currentForm = null;
+        public static Form? currentForm = new Form();
         public static void CreateEvents(MenuStrip menu) 
         {
             foreach (ToolStripItem item in menu.Items) 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace SUS
     public record struct Ware(int Id, string Name, int SellerId, float Price);
     public static class Global
     {
-        readonly static string DIR;
+        public readonly static string DIR;
         readonly static SqlConnection CONN;
 
         public static (string Login, byte Type) CurrentUser { get; private set; }
@@ -121,6 +122,43 @@ namespace SUS
             err = String.Empty;
             return cmd.ExecuteNonQuery() == 1;
         }
+
+        public static string GetPass(string login) 
+        {
+            string cmdText = "SELECT pass FROM users WHERE login LIKE @login";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@login"].Value = login;
+
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+
+            string pass = (string)reader["pass"];
+            reader.Close();
+            return pass;
+        }
+
+        public static bool HasUser(string login)
+        {
+            string cmdText = "SELECT login FROM users WHERE login LIKE @login";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@login"].Value = login;
+
+            if (cmd.ExecuteScalar() is not null)
+                return true;
+
+            return false;
+        }
+        public static bool DeleteUser(string login) 
+        {
+            string cmdText = "DELETE FROM users WHERE login LIKE @login";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@login", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@login"].Value = login;
+
+            return cmd.ExecuteNonQuery() == 1;
+        }
         #endregion
 
         #region wares
@@ -162,7 +200,7 @@ namespace SUS
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                MessageBox.Show(reader[0] + " " + (string)reader[1]);
+                //MessageBox.Show(reader[0] + " " + (string)reader[1]);
                 sellers.Add(new((int)reader[0], (string)reader[1]));
             }
             reader.Close();
