@@ -8,8 +8,14 @@ using System.Threading.Tasks;
 
 namespace SUS
 {
+    public enum ORDER_STATUS
+    {
+        PENDING = 1,
+        CONFIRMED = 2
+    }
     public record struct Seller(int Id, string Name);
     public record struct Ware(int Id, string Name, int SellerId, float Price);
+    public record struct Order(int Id, int SellerId, DateTime CreationTime, ORDER_STATUS Status, (Ware, int)[] Wares);
     public static class Global
     {
         public readonly static string DIR;
@@ -275,6 +281,50 @@ namespace SUS
             reader.Close();
 
             return wares.ToArray();
+        }
+
+        public static Ware[] GetWaresByName(string name)
+        {
+            List<Ware> wares = new();
+            string cmdText = "SELECT * FROM wares WHERE name LIKE '%' + @name + '%'";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@name", System.Data.SqlDbType.VarChar, 50);
+            cmd.Parameters["@name"].Value = name;
+            var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                wares.Add(new((int)reader["id"], (string)reader["name"], (int)reader["seller_id"], Convert.ToSingle(reader["price"])));
+            }
+            reader.Close();
+
+            return wares.ToArray();
+        }
+        #endregion
+        #region orders
+        public static Order[] GetOrders(int sellerId = -1, DateTime? dateFrom = null, DateTime? dateTo = null, ORDER_STATUS status = ORDER_STATUS.PENDING | ORDER_STATUS.CONFIRMED)
+        {
+            List<Order> orders = new();
+            string cmdText = "SELECT * FROM orders WHERE creation_time >= @date_from AND creation_time <= @date_to AND (status & @status) > 0";
+            if (sellerId > -1)
+                cmdText += " AND seller_id = @seller_id";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@date_from", System.Data.SqlDbType.DateTime);
+                cmd.Parameters["@date_from"].Value = dateFrom is null ? DateTime.Parse("2010-01-01T00:00:00.000") : dateFrom;
+            cmd.Parameters.Add("@date_to", System.Data.SqlDbType.DateTime);
+            cmd.Parameters["@date_to"].Value = dateTo is null ? DateTime.Parse("2050-01-01T00:00:00.000") : dateTo;
+            cmd.Parameters.Add("@status", System.Data.SqlDbType.TinyInt);
+            cmd.Parameters["@status"].Value = (byte)status;
+            if (sellerId > -1)
+            {
+                cmd.Parameters.Add("@seller_id", System.Data.SqlDbType.Int);
+                cmd.Parameters["@seller_id"].Value = sellerId;
+            }
+            var reader = cmd.ExecuteReader();
+
+            reader.Close();
+
+            return orders.ToArray();
         }
         #endregion
     }

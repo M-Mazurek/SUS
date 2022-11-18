@@ -260,7 +260,7 @@ namespace SUS
             return true;
         }
 
-        bool ParseLW(string[] args, out string err)
+        bool ParseLWF(string[] args, out string err)
         {
             err = String.Empty;
             if (args.Length == 0)
@@ -270,7 +270,7 @@ namespace SUS
             }
             if (args.Length > 1)
             {
-                err = "Komenda \"lw\" oczekuje 1 argumentu.";
+                err = "Komenda \"lwf\" oczekuje 1 argumentu.";
                 return false;
             }
             if (!int.TryParse(args[0], out int sellerId))
@@ -280,6 +280,32 @@ namespace SUS
             }
 
             Global.GetWaresFrom(sellerId).Select(x => $"{x.Id} - {x.Name} [{x.Price}]").ToList().ForEach(x => SayLater(x));
+            return true;
+        }
+
+        bool ParseLWN(string[] args, out string err)
+        {
+            err = String.Empty;
+            if (args.Length == 0)
+            {
+                err = "Nie podano argumentu <nazwa>";
+                return false;
+            }
+            if (args.Length > 1)
+            {
+                err = "Komenda \"lwn\" oczekuje 1 argumentu.";
+                return false;
+            }
+
+            Global.GetWaresByName(args[0]).Select(x => $"{x.Id} - {x.Name} [{x.Price}]").ToList().ForEach(x => SayLater(x));
+            return true;
+        }
+
+        bool ParseGO(string[] args, out string err)
+        {
+            err = String.Empty;
+
+            Global.GetOrders();
             return true;
         }
     }
