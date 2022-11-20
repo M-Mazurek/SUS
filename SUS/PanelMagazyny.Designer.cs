@@ -162,7 +162,6 @@
             this.chbBrak.TabIndex = 16;
             this.chbBrak.Text = "Pokaż brakujące";
             this.chbBrak.UseVisualStyleBackColor = true;
-            this.chbBrak.CheckedChanged += new System.EventHandler(this.chbBrak_CheckedChanged);
             // 
             // txtTowar
             // 

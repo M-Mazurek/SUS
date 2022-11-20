@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelZamówienia));
             this.menu1 = new SUS.Menu();
             this.panelFilters = new System.Windows.Forms.Panel();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.btnCreateOffer = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,8 +45,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.dtpStart = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.panelFilters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -60,7 +60,7 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
-            this.panelFilters.Controls.Add(this.dateTimePicker1);
+            this.panelFilters.Controls.Add(this.dtpEnd);
             this.panelFilters.Controls.Add(this.dtpStart);
             this.panelFilters.Controls.Add(this.btnCreateOffer);
             this.panelFilters.Controls.Add(this.label4);
@@ -72,6 +72,22 @@
             this.panelFilters.Name = "panelFilters";
             this.panelFilters.Size = new System.Drawing.Size(200, 520);
             this.panelFilters.TabIndex = 1;
+            // 
+            // dtpEnd
+            // 
+            this.dtpEnd.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dtpEnd.Location = new System.Drawing.Point(0, 260);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(200, 23);
+            this.dtpEnd.TabIndex = 6;
+            // 
+            // dtpStart
+            // 
+            this.dtpStart.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dtpStart.Location = new System.Drawing.Point(0, 160);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(200, 23);
+            this.dtpStart.TabIndex = 5;
             // 
             // btnCreateOffer
             // 
@@ -207,22 +223,6 @@
             this.label5.Text = "Numer Zamówienia";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dtpStart
-            // 
-            this.dtpStart.CalendarMonthBackground = System.Drawing.Color.White;
-            this.dtpStart.Location = new System.Drawing.Point(0, 160);
-            this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(200, 23);
-            this.dtpStart.TabIndex = 5;
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.CalendarMonthBackground = System.Drawing.Color.White;
-            this.dateTimePicker1.Location = new System.Drawing.Point(0, 260);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 23);
-            this.dateTimePicker1.TabIndex = 6;
-            // 
             // PanelZamówienia
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -262,6 +262,6 @@
         private Label label5;
         private Button btnCreateOffer;
         private DateTimePicker dtpStart;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker dtpEnd;
     }
 }

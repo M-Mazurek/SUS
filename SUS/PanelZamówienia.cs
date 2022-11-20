@@ -61,15 +61,12 @@ namespace SUS
             panelOrders.Controls.Clear();
 
             //list is ghetto B)
-            List<Ware> wares = new List<Ware>();
-            if (customComboCompanies!.SelectedIndex != -1)
-            {
-                List<int> currentCompanyId = new List<int>(Global.GetSellers().Where(e => e.Name == (string)customComboCompanies.SelectedItem!).Select(x => x.Id).ToArray());
-                //currentCompanyId.ForEach(e => MessageBox.Show($"Current Picked Id: {e}"));
-                wares = new List<Ware>(Global.GetWaresFrom(currentCompanyId.First()));
-            }
+            List<Order> orders = new List<Order>();
+            int currentId = Global.GetSellers().Select(x => x.Id).First();
+            orders = new List<Order>(Global.GetOrders(currentId, dtpStart.Value, dtpEnd.Value, (ORDER_STATUS)customComboState!.SelectedIndex));
+            orders.ForEach(x => MessageBox.Show($"{x}"));
 
-            int maxOrders = wares.Count;
+            int maxOrders = orders.Count;
             for(int i = 0; i < maxOrders; i++) 
             {
                 Based based = new Based()

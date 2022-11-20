@@ -36,9 +36,13 @@ namespace SUS
 
             if (!String.IsNullOrWhiteSpace(txtTowar.Text)) 
             {
-                wares.ForEach(e => MessageBox.Show($"BEFORE CHANGE: {e.Name} != {txtTowar.Text}"));
-                
-                wares.ForEach(e => MessageBox.Show($"AFTER CHANGE: {e.Name} != {txtTowar.Text}"));
+                wares.Clear();
+                wares.AddRange(Global.GetWaresByName(txtTowar.Text));
+            }
+
+            if (chbBrak.Checked) 
+            {
+                // check count but B(
             }
 
             //wares.ForEach(x => MessageBox.Show($"{x}"));
@@ -72,11 +76,6 @@ namespace SUS
         {
             // render new wares
             CreateOrders();
-        }
-
-        private void chbBrak_CheckedChanged(object sender, EventArgs e)
-        {
-            
         }
     }
 }
