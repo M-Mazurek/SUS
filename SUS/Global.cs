@@ -178,6 +178,19 @@ namespace SUS
             return sellers.ToArray();
         }
 
+        public static string GetSellerName(int id)
+        {
+            string cmdText = "SELECT name FROM seller WHERE id = @id";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@id"].Value = id;
+            var reader = cmd.ExecuteReader();
+
+            string res = reader.Read() ? (string)reader[0] : String.Empty;
+            reader.Close();
+            return res;
+        }
+
         public static bool AddWare(string name, float price, int sellerId, out string err)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -303,6 +316,11 @@ namespace SUS
             }
             return true;
         }
+
+        /*public static bool AddOrder(int sellerId, DateTime creationTime, ORDER_STATUS status, WareStack[] stacks)
+        {
+            string cmdText = 
+        }*/
 
         public static Order[] GetOrders(int sellerId = -1, DateTime? dateFrom = null, DateTime? dateTo = null, ORDER_STATUS status = ORDER_STATUS.PENDING | ORDER_STATUS.CONFIRMED)
         {
