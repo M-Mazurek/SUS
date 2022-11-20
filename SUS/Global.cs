@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace SUS
 {
@@ -15,7 +16,8 @@ namespace SUS
     }
     public record struct Seller(int Id, string Name);
     public record struct Ware(int Id, string Name, int SellerId, float Price);
-    public record struct Order(int Id, int SellerId, DateTime CreationTime, ORDER_STATUS Status, (Ware, int)[] Wares);
+    public record struct Order(int Id, int SellerId, DateTime CreationTime, ORDER_STATUS Status, WareStack[] Wares);
+    public record struct WareStack(Ware Ware, int Amount);
     public static class Global
     {
         public readonly static string DIR;
@@ -300,8 +302,46 @@ namespace SUS
 
             return wares.ToArray();
         }
+
+        public static bool GetWareById(int id, out Ware ware)
+        {
+            string cmdText = "SELECT * FROM wares WHERE id = @id";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@id"].Value = id;
+            var reader = cmd.ExecuteReader();
+
+            if (reader.Read())
+            {
+                ware = new((int)reader["id"], (string)reader["name"], (int)reader["seller_id"], Convert.ToSingle(reader["price"]));
+                reader.Close();
+                return true;
+            }
+            ware = new();
+            reader.Close();
+            return false;
+        }
         #endregion
         #region orders
+        public static bool ParseWareStacks(string str, out WareStack[] stacks)
+        {
+            try
+            {
+                stacks = str.Split(' ').Select(x =>
+                {
+                    string[] strs = x.Split('_');
+                    GetWareById(int.Parse(strs[0]), out Ware ware);
+                    return new WareStack(ware, int.Parse(strs[1]));
+                }).ToArray();
+            }
+            catch
+            {
+                stacks = Array.Empty<WareStack>();
+                return false;
+            }
+            return true;
+        }
+
         public static Order[] GetOrders(int sellerId = -1, DateTime? dateFrom = null, DateTime? dateTo = null, ORDER_STATUS status = ORDER_STATUS.PENDING | ORDER_STATUS.CONFIRMED)
         {
             List<Order> orders = new();
@@ -321,7 +361,16 @@ namespace SUS
                 cmd.Parameters["@seller_id"].Value = sellerId;
             }
             var reader = cmd.ExecuteReader();
-
+            while (reader.Read())
+            {
+                ParseWareStacks((string)reader["wares"], out var stacks);
+                orders.Add(new((int)reader["id"], 
+                                    (int)reader["seller_id"],
+                                    DateTime.Parse((string)reader["creation_time"], 
+                                                   CultureInfo.InvariantCulture),
+                                    (ORDER_STATUS)reader["status"],
+                                    stacks));
+            }
             reader.Close();
 
             return orders.ToArray();
