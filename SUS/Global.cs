@@ -317,10 +317,34 @@ namespace SUS
             return true;
         }
 
-        /*public static bool AddOrder(int sellerId, DateTime creationTime, ORDER_STATUS status, WareStack[] stacks)
+        public static string ToDBString(this WareStack[] stacks)
         {
-            string cmdText = 
-        }*/
+            return String.Join(' ', stacks.Select(x => $"{x.Ware.Id}_{x.Amount}"));
+        }
+
+        public static bool NewOrder(int sellerId, ORDER_STATUS status, WareStack[] stacks, out string err)
+        {
+            if (GetSellerName(sellerId) == String.Empty)
+            {
+                err = "Sprzedawca o danym id nie istnieje.";
+                return false;
+            }
+            err = String.Empty;
+            string cmdText = "INSERT INTO orders (seller_id, creation_time, status, wares) VALUES (@seller_id, @creation_time, @status, @wares)";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@seller_id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@seller_id"].Value = sellerId;
+            cmd.Parameters.Add("@creation_time", System.Data.SqlDbType.DateTime);
+            cmd.Parameters["@creation_time"].Value = DateTime.Now;
+            cmd.Parameters.Add("@status", System.Data.SqlDbType.TinyInt);
+            cmd.Parameters["@status"].Value = (byte)status;
+            cmd.Parameters.Add("@wares", System.Data.SqlDbType.VarChar, 255);
+            cmd.Parameters["@wares"].Value = stacks.ToDBString();
+
+            cmd.ExecuteNonQuery();
+
+            return true;
+        }
 
         public static Order[] GetOrders(int sellerId = -1, DateTime? dateFrom = null, DateTime? dateTo = null, ORDER_STATUS status = ORDER_STATUS.PENDING | ORDER_STATUS.CONFIRMED)
         {
