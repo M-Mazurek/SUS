@@ -20,7 +20,7 @@ namespace SUS
 
         private static PictureBox? backgroundPicture;
         private static bool isLoopOpened = false; // ghetto fix? // we need only one async loop 
-        public static void StartAnim(Form frm) 
+        public static void StartAnim(Form frm)
         {
             if (MenuStripFunctions.currentForm!.GetType() == frm!.GetType())
                 return;
@@ -38,7 +38,7 @@ namespace SUS
             windowSize = new(frm.Width - backgroundPicture.Width - windowFrameMargin.X, frm.Height - backgroundPicture.Height - windowFrameMargin.Y);
             Random random = new Random();
             backgroundPicture.Location = new(random.Next(windowSize.X), random.Next(windowSize.Y));
-            if(!isLoopOpened)
+            if (!isLoopOpened)
                 BackgroundLoop();
 
             isLoopOpened = true;
@@ -80,11 +80,11 @@ namespace SUS
             /*pictureAdjustments.X = backgroundPicture.Location.X < windowSize.X ? 1 : -1;
             pictureAdjustments.Y = backgroundPicture.Location.Y < windowSize.Y ? 1 : -1;*/
         }
-        public static Point Add(this Point p1, Point p2) 
+        public static Point Add(this Point p1, Point p2)
         {
             return new Point(p1.X + p2.X, p1.Y + p2.Y);
         }
-        public static object CreateObjectInstance(string? str) 
+        public static object CreateObjectInstance(string? str)
         {
             Type? t = Type.GetType(str!);
             if (t == null)
@@ -92,14 +92,14 @@ namespace SUS
 
             return Activator.CreateInstance(t)!;
         }
-        public static void SwitchForm(this Form form, Form newForm) 
+        public static void SwitchForm(this Form form, Form newForm)
         {
             MenuStripFunctions.currentForm = newForm;
             form.Hide();
             newForm.ShowDialog();
             form.Close();
         }
-        public static string ChangeName(Label label, string[] newText, bool needCalc) => label.Name switch 
+        public static string ChangeName(Label label, string[] newText, bool needCalc) => label.Name switch
         {
             "label1" => label.Text = newText[0],
             "label2" => label.Text = newText[1],
@@ -107,7 +107,7 @@ namespace SUS
             "label4" => label.Text = needCalc ? $"{Math.Round(float.Parse(newText[1].Replace(" zł", "")) * float.Parse(newText[2]), 2)} zł" : newText[3],
             _ => label.Text = "no suitable label found",
         };
-        public static void SetupLabels(Label label, int[] width, int[] location) 
+        public static void SetupLabels(Label label, int[] width, int[] location)
         {
             ChangeSize(label, width);
             ChangeLocation(label, location);
@@ -128,7 +128,7 @@ namespace SUS
             "label4" => label.Location = new(location[3], 0),
             _ => label.Location = label.Location,
         };
-        public static float GetSum(Panel startPanel) 
+        public static float GetSum(Panel startPanel)
         {
             float sum = 0;
             int ilosc = 0;
@@ -159,7 +159,7 @@ namespace SUS
                 }
                 sum += ilosc * cena;
             }
-            return (float)Math.Round(sum,2);
+            return (float)Math.Round(sum, 2);
         }
         public static void GetPrice(Panel startPanel)
         {
@@ -195,5 +195,11 @@ namespace SUS
                 }
             }
         }
+        public static string SetupStatus(ORDER_STATUS os) => os switch
+        {
+            ORDER_STATUS.PENDING => "Oczekujące",
+            ORDER_STATUS.CONFIRMED => "Potwierdzone",
+            _ => ""
+        };
     }
 }

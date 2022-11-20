@@ -366,9 +366,8 @@ namespace SUS
                 ParseWareStacks((string)reader["wares"], out var stacks);
                 orders.Add(new((int)reader["id"], 
                                     (int)reader["seller_id"],
-                                    DateTime.Parse((string)reader["creation_time"], 
-                                                   CultureInfo.InvariantCulture),
-                                    (ORDER_STATUS)reader["status"],
+                                    (DateTime)reader["creation_time"], 
+                                    (ORDER_STATUS)(byte)reader["status"],
                                     stacks));
             }
             reader.Close();

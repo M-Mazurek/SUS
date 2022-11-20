@@ -62,9 +62,10 @@ namespace SUS
 
             //list is ghetto B)
             List<Order> orders = new List<Order>();
-            int currentId = Global.GetSellers().Select(x => x.Id).First();
-            orders = new List<Order>(Global.GetOrders(currentId, dtpStart.Value, dtpEnd.Value, (ORDER_STATUS)customComboState!.SelectedIndex));
-            orders.ForEach(x => MessageBox.Show($"{x}"));
+            int currentId = Global.GetSellers().Where(x => x.Name == (string)customComboCompanies!.SelectedItem).Select(x => x.Id).FirstOrDefault();
+            //MessageBox.Show($"CurrentID: {currentId}");
+            orders = new List<Order>(Global.GetOrders(currentId)); //dtpStart.Value, dtpEnd.Value, (ORDER_STATUS)customComboState!.SelectedIndex
+            //orders.ForEach(x => MessageBox.Show($"ORDERS: {x}"));
 
             int maxOrders = orders.Count;
             for(int i = 0; i < maxOrders; i++) 
@@ -80,7 +81,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         l.Click += Based_Click;
-                        ExtensionMethods.ChangeName(l, new string[] { $"nr_zam{i}", $"{customComboCompanies.SelectedItem}", $"data", $"status" }, false); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{orders[i].Id.ToString().PadLeft(4, '0')}", $"", $"{orders[i].CreationTime}", $"{ExtensionMethods.SetupStatus(orders[i].Status)}" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
