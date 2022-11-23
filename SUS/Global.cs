@@ -218,7 +218,7 @@ namespace SUS
 
         public static string GetSellerName(int id)
         {
-            string cmdText = "SELECT name FROM seller WHERE id = @id";
+            string cmdText = "SELECT name FROM sellers WHERE id = @id";
             SqlCommand cmd = new(cmdText, CONN);
             cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
             cmd.Parameters["@id"].Value = id;

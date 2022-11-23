@@ -52,7 +52,7 @@ namespace SUS
                 InnerBorderColor = BackColor,
                 ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
                 ForeColor = Color.White,
-                Items = { "Potwierdzone", "Oczekujące" }, // viable states
+                Items = { "Oczekujące", "Potwierdzone" }, // viable states
             };
             panelFilters.Controls.Add(customComboState);
         }
@@ -64,8 +64,11 @@ namespace SUS
             List<Order> orders = new List<Order>();
             int currentId = Global.GetSellers().Where(x => x.Name == (string)customComboCompanies!.SelectedItem).Select(x => x.Id).FirstOrDefault();
             //MessageBox.Show($"CurrentID: {currentId}");
-            orders = new List<Order>(Global.GetOrders(currentId)); //dtpStart.Value, dtpEnd.Value, (ORDER_STATUS)customComboState!.SelectedIndex
+            orders = new List<Order>(Global.GetOrders(currentId, dtpStart.Value, dtpEnd.Value, customComboState!.SelectedIndex == -1 ? (ORDER_STATUS)3 : (ORDER_STATUS)(customComboState!.SelectedIndex + 1)));
             //orders.ForEach(x => MessageBox.Show($"ORDERS: {x}"));
+
+            if(currentId == 0)
+                orders = new List<Order>(Global.GetOrders());
 
             int maxOrders = orders.Count;
             for(int i = 0; i < maxOrders; i++) 
@@ -81,7 +84,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         l.Click += Based_Click;
-                        ExtensionMethods.ChangeName(l, new string[] { $"{orders[i].Id.ToString().PadLeft(4, '0')}", $"", $"{orders[i].CreationTime}", $"{ExtensionMethods.SetupStatus(orders[i].Status)}" }, false); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{orders[i].Id.ToString().PadLeft(4, '0')}", $"{Global.GetSellerName(orders[i].SellerId)}", $"{orders[i].CreationTime}", $"{ExtensionMethods.SetupStatus(orders[i].Status)}" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
@@ -110,6 +113,15 @@ namespace SUS
         private void btnCreateOffer_Click(object sender, EventArgs e)
         {
             ExtensionMethods.SwitchForm(this, new StwórzZamówienie());
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            customComboCompanies!.SelectedIndex = -1;
+            customComboState!.SelectedIndex = -1;
+            dtpStart.Value = DateTime.Now;
+            dtpEnd.Value = DateTime.Now;
+            CreateOrders();
         }
     }
 }
