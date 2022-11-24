@@ -37,6 +37,7 @@ namespace SUS
 
             CONN = new(connStr);
             CONN.Open();
+            SyncStorageUnit();
         }
 
         #region accounts
@@ -435,14 +436,19 @@ namespace SUS
             return orders.ToArray();
         }
 
-        public static void ConfirmOrder(int orderId)
+        public static void ConfirmOrder(Order order)
         {
             string cmdtext = "UPDATE orders SET status = 2 WHERE id = @id";
             SqlCommand cmd = new(cmdtext, CONN);
             cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
-            cmd.Parameters["@id"].Value = orderId;
+            cmd.Parameters["@id"].Value = order.Id;
 
             cmd.ExecuteNonQuery();
+
+            order.Wares.ToList().ForEach(x =>
+            {
+                ChangeWareAmount(GetWareAmount(x.Ware.Id) + x.Amount, x.Ware.Id);
+            });
         }
         #endregion
         #region corrections
@@ -528,6 +534,11 @@ namespace SUS
 
             cmd.ExecuteNonQuery();
             _storageUnit[_storageUnit.ToList().FindIndex(x => x.Ware.Id == wareId)].Amount = amount;
+        }
+
+        public static int GetWareAmount(int wareId)
+        {
+            return _storageUnit.ToList().Find(x => x.Ware.Id == wareId).Amount;
         }
         #endregion
     }
