@@ -21,6 +21,7 @@ namespace SUS
     public record struct Correction(int Id, int OrderId, DateTime CreationTime, WareStack[] InexactWares);
     public static class Global
     {
+        private static WareStack[] _storageUnit = Array.Empty<WareStack>();
         public readonly static string DIR;
         readonly static SqlConnection CONN;
 
@@ -492,6 +493,41 @@ namespace SUS
             }
 
             return corrs.ToArray();
+        }
+        #endregion
+        #region storage_unit
+        private static void SyncStorageUnit()
+        {
+            string cmdText = "SELECT * FROM storage_unit";
+            SqlCommand cmd = new(cmdText, CONN);
+
+            var reader = cmd.ExecuteReader();
+            List<(int WareId, int Amount)> waresTemp = new();
+            while (reader.Read())
+            {
+                waresTemp.Add(((int)reader[0], (int)reader[1]));
+            }
+            reader.Close();
+
+            _storageUnit = waresTemp.Select(x =>
+            {
+                GetWareById(x.WareId, out var ware);
+                return new WareStack(ware, x.Amount);
+            }).ToArray();
+        }
+
+        public static void ChangeWareAmount(int amount, int wareId)
+        {
+            string cmdText = "UPDATE storage_unit SET amount = @amount WHERE ware_id = @ware_id";
+            SqlCommand cmd = new(cmdText, CONN);
+
+            cmd.Parameters.Add("@ware_id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@ware_id"].Value = wareId;
+            cmd.Parameters.Add("@amount", System.Data.SqlDbType.Int);
+            cmd.Parameters["@amount"].Value = amount;
+
+            cmd.ExecuteNonQuery();
+            _storageUnit[_storageUnit.ToList().FindIndex(x => x.Ware.Id == wareId)].Amount = amount;
         }
         #endregion
     }
