@@ -15,6 +15,7 @@ namespace SUS
     {
         private CustomCombo customComboCompanies;
         private CustomNumericUpDown? cn;
+        private List<Ware>? wares;
         public StwórzZamówienie()
         {
             InitializeComponent();
@@ -55,7 +56,7 @@ namespace SUS
             if (customComboCompanies!.SelectedIndex == -1)
                 return;
 
-            List<Ware> wares = new List<Ware>(Global.GetWaresFrom(customComboCompanies!.SelectedIndex + 1));
+            wares = new List<Ware>(Global.GetWaresFrom(customComboCompanies!.SelectedIndex + 1));
             //wares.ForEach(x => MessageBox.Show($"{x.Name}"));
 
             int maxOrders = wares.Count;
@@ -114,8 +115,21 @@ namespace SUS
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            List<WareStack> wareStacks = new List<WareStack>();
             // do smth
             //CustomNumericUpDown.GetValues(panelOrders).ForEach(x => MessageBox.Show(x.ToString()));
+            for (int i = 0; i < wares!.Count; i++) 
+            {
+                //MessageBox.Show($"{CustomNumericUpDown.GetValues(panelOrders)[i]}");
+                decimal wareCount = CustomNumericUpDown.GetValues(panelOrders)[i];
+                if (wareCount <= 0)
+                    continue;
+
+                Ware ware = new(wares[i].Id, wares[i].Name, wares[i].SellerId, wares[i].Price);
+                WareStack wareStack = new(ware, (int)wareCount);
+                wareStacks.Add(wareStack);
+            }
+            Global.NewOrder(wares[0].SellerId, ORDER_STATUS.PENDING, wareStacks.ToArray(), out string err);
             ExtensionMethods.SwitchForm(this, new PanelZamówienia());
         }
 

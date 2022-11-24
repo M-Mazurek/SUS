@@ -60,7 +60,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { $"{wares[i].Name}", $"{wares[i].Price} zł", "30", "0 zł" }, true); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{wares[i].Name}", $"{wares[i].Price} zł", $"3", "0 zł" }, true); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
