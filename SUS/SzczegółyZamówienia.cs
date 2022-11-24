@@ -12,7 +12,8 @@ namespace SUS
 {
     public partial class SzczegółyZamówienia : Form
     {
-        public SzczegółyZamówienia(string company, string date, string state, string orderId)
+        private Order order;
+        public SzczegółyZamówienia(Order order)
         {
             InitializeComponent();
 
@@ -21,10 +22,12 @@ namespace SUS
             panelOrders.VerticalScroll.Visible = false;
             panelOrders.AutoScroll = true;
 
-            txtCompany.Text = company;
-            txtDate.Text = date;
-            txtState.Text = state;
-            txtOrderId.Text = orderId;
+            this.order = order;
+
+            txtCompany.Text = Global.GetSellerName(order.SellerId);
+            txtDate.Text = order.CreationTime.ToString();
+            txtState.Text = ExtensionMethods.SetupStatus(order.Status);
+            txtOrderId.Text = order.Id.ToString().PadLeft(4, '0');
 
             lbSuma.Text = "Suma: 0 zł";
 
@@ -41,6 +44,13 @@ namespace SUS
         private void CreateOrders() 
         {
             panelOrders.Controls.Clear();
+
+            List<WareStack> wareStack = new List<WareStack>();
+            //MessageBox.Show($"{order.Wares.ToDBString()}");
+            //order.Wares.ToList().ForEach(x => Global.ParseWareStacks(x.ToString(), out WareStack[] stacks));
+            
+            //wareStack.ForEach(x => MessageBox.Show($"{x.Ware.Name}, {x.Amount}"));
+
             int maxOrders = 5;
             for (int i = 0; i < maxOrders; i++)
             {
@@ -55,7 +65,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { "towar" + i.ToString(), "10 zł", $"{2 * (i + 1)}", $"0 zł" }, true); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{order.Id}", "10 zł", $"{2 * (i + 1)}", $"0 zł" }, true); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
@@ -84,6 +94,7 @@ namespace SUS
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             // change order state to ready B)
+
             ExtensionMethods.SwitchForm(this, new PanelZamówienia());
         }
     }

@@ -14,6 +14,7 @@ namespace SUS
     {
         private CustomCombo? customComboCompanies;
         private CustomCombo? customComboState;
+        private List<Order>? orders;
         public PanelZamówienia()
         {
             InitializeComponent();
@@ -61,11 +62,13 @@ namespace SUS
             panelOrders.Controls.Clear();
 
             //list is ghetto B)
-            List<Order> orders = new List<Order>();
+            orders = new List<Order>();
             int currentId = Global.GetSellers().Where(x => x.Name == (string)customComboCompanies!.SelectedItem).Select(x => x.Id).FirstOrDefault();
             //MessageBox.Show($"CurrentID: {currentId}");
             orders = new List<Order>(Global.GetOrders(currentId, dtpStart.Value, dtpEnd.Value, customComboState!.SelectedIndex == -1 ? (ORDER_STATUS)3 : (ORDER_STATUS)(customComboState!.SelectedIndex + 1)));
             //orders.ForEach(x => MessageBox.Show($"ORDERS: {x}"));
+
+            //orders.ForEach(x => MessageBox.Show($"WARES: {x.Wares}"));
 
             if(currentId == 0)
                 orders = new List<Order>(Global.GetOrders());
@@ -76,6 +79,7 @@ namespace SUS
                 Based based = new Based()
                 {
                     Location = new(0, 10 + (10 * i) + (50 * i)),
+                    Name = i.ToString(),
                 };
                 if (i == maxOrders - 1)
                     based.Size = new(based.Width, based.Height + 10);
@@ -93,13 +97,15 @@ namespace SUS
 
         private void Based_Click(object? sender, EventArgs e)
         {
-            List<string> list = new List<string>();
+            //List<string> list = new List<string>();
             // Open order detail
-            foreach (Label l in ((Label)sender!).Parent.Controls.OfType<Label>().OrderBy(x => x.Name))
+            //orderId, company, date, state
+            /*foreach (Label l in ((Label)sender!).Parent.Controls.OfType<Label>().OrderBy(x => x.Name))
             {
                 list.Add(l.Text);
-            }
-            ExtensionMethods.SwitchForm(this, new SzczegółyZamówienia(list[0], list[1], list[2], list[3]));
+            }*/
+            //ExtensionMethods.SwitchForm(this, new SzczegółyZamówienia(list[0], list[1], list[2], list[3]));
+            ExtensionMethods.SwitchForm(this, new SzczegółyZamówienia(orders![Int32.Parse(((Label)sender!).Parent.Parent.Name)]));
         }
 
         private void btnFilter_Click(object sender, EventArgs e)

@@ -322,14 +322,18 @@ namespace SUS
             SqlCommand cmd = new(cmdText, CONN);
             cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
             cmd.Parameters["@id"].Value = id;
+            //MessageBox.Show("e spisz? v0");
             var reader = cmd.ExecuteReader();
-
+            //MessageBox.Show("e spisz? v1");
             if (reader.Read())
             {
+                //MessageBox.Show("e spisz? v2");
                 ware = new((int)reader["id"], (string)reader["name"], (int)reader["seller_id"], Convert.ToSingle(reader["price"]));
                 reader.Close();
+                //MessageBox.Show($"WARE: {ware}");
                 return true;
             }
+            //MessageBox.Show("e spisz? v3a");
             ware = new();
             reader.Close();
             return false;
@@ -338,11 +342,14 @@ namespace SUS
         #region orders
         public static bool ParseWareStacks(string str, out WareStack[] stacks)
         {
+            //MessageBox.Show($"PARSE WARE STACKS str: {str}");
             try
             {
                 stacks = str.Split(' ').Select(x =>
                 {
                     string[] strs = x.Split('_');
+                    //strs.ToList().ForEach(e => MessageBox.Show($"PARSE WARE STACKS strs: {e}"));
+                    //MessageBox.Show($"PARSE WARE STACKS GetWareById(): {GetWareById(int.Parse(strs[0]), out Ware ware)}"); // nie zwraca niczego ?
                     GetWareById(int.Parse(strs[0]), out Ware ware);
                     return new WareStack(ware, int.Parse(strs[1]));
                 }).ToArray();
@@ -405,12 +412,14 @@ namespace SUS
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                //MessageBox.Show($"GLOBAL PARSE: {ParseWareStacks((string)reader["wares"], out var stacks)}");
                 ParseWareStacks((string)reader["wares"], out var stacks);
                 orders.Add(new((int)reader["id"], 
                                     (int)reader["seller_id"],
                                     (DateTime)reader["creation_time"], 
                                     (ORDER_STATUS)(byte)reader["status"],
                                     stacks));
+                //MessageBox.Show($"GLOBAL MESSAGE: {stacks}");
             }
             reader.Close();
 
