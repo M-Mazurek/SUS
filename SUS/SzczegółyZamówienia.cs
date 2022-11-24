@@ -91,7 +91,7 @@ namespace SUS
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             // change order state to ready B)
-            Global.ConfirmOrder(order.Id);
+            Global.ConfirmOrder(order);
             ExtensionMethods.SwitchForm(this, new PanelZamówienia());
         }
     }

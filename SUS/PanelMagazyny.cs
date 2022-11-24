@@ -40,9 +40,9 @@ namespace SUS
                 wares.AddRange(Global.GetWaresByName(txtTowar.Text));
             }
 
-            if (chbBrak.Checked) 
+            if (!chbBrak.Checked) 
             {
-                // check count but B(
+                wares = wares.Where(x => Global.GetWareAmount(x.Id) > 0).ToList();
             }
 
             //wares.ForEach(x => MessageBox.Show($"{x}"));
@@ -60,7 +60,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { $"{wares[i].Name}", $"{wares[i].Price} zł", $"3", "0 zł" }, true); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{wares[i].Name}", $"{wares[i].Price} zł", $"{Global.GetWareAmount(wares[i].Id)}", "0 zł" }, true); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
@@ -75,6 +75,11 @@ namespace SUS
         private void txtTowar_TextChanged(object sender, EventArgs e)
         {
             // render new wares
+            CreateOrders();
+        }
+
+        private void chbBrak_CheckedChanged(object sender, EventArgs e)
+        {
             CreateOrders();
         }
     }
