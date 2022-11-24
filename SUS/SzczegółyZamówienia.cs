@@ -45,13 +45,10 @@ namespace SUS
         {
             panelOrders.Controls.Clear();
 
-            List<WareStack> wareStack = new List<WareStack>();
-            //MessageBox.Show($"{order.Wares.ToDBString()}");
-            //order.Wares.ToList().ForEach(x => Global.ParseWareStacks(x.ToString(), out WareStack[] stacks));
-            
+            List<WareStack> wareStack = new List<WareStack>(order.Wares);
             //wareStack.ForEach(x => MessageBox.Show($"{x.Ware.Name}, {x.Amount}"));
 
-            int maxOrders = 5;
+            int maxOrders = wareStack.Count;
             for (int i = 0; i < maxOrders; i++)
             {
                 Based based = new Based()
@@ -65,7 +62,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { $"{order.Id}", "10 zł", $"{2 * (i + 1)}", $"0 zł" }, true); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{wareStack[i].Ware.Name}", $"{wareStack[i].Ware.Price} zł", $"{wareStack[i].Amount}", $"0 zł" }, true); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);

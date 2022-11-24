@@ -34,19 +34,31 @@ namespace SUS
                 InnerBorderColor = BackColor,
                 ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
                 ForeColor = Color.White,
-                Items = { "Firma1", "Firma2", "Firma3" }, // viable companies
             };
+            customComboCompanies.Items.AddRange(Global.GetSellers().Select(x => x.Name).ToArray()); // viable companies
+            customComboCompanies.SelectedIndexChanged += CustomComboCompanies_SelectedIndexChanged;
             panelFilters.Controls.Add(customComboCompanies);
 
             CreateOrders();
             ExtensionMethods.StartAnim(this);
         }
 
+        private void CustomComboCompanies_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            CreateOrders();
+        }
+
         private void CreateOrders()
         {
             panelOrders.Controls.Clear();
 
-            int maxOrders = 20;
+            if (customComboCompanies!.SelectedIndex == -1)
+                return;
+
+            List<Ware> wares = new List<Ware>(Global.GetWaresFrom(customComboCompanies!.SelectedIndex + 1));
+            //wares.ForEach(x => MessageBox.Show($"{x.Name}"));
+
+            int maxOrders = wares.Count;
             for (int i = 0; i < maxOrders; i++)
             {
                 Based based = new Based()
@@ -60,7 +72,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { "towar" + i.ToString(), $"420 zł", "0", $"0 zł" }, true); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{wares[i].Name}", $"{wares[i].Price} zł", $"0", $"0 zł" }, true); // swaps label names to correct ones
                         if (l.Name == "label3")
                         {
                             //l.BackColor = Color.FromArgb(50, 99, 212, 113);
