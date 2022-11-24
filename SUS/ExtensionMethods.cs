@@ -182,7 +182,7 @@ namespace SUS
                             continue;
 
                         if (label.Name == "label2")
-                            pricePerItem = Int32.Parse(label.Text.Replace(" zł", ""));
+                            pricePerItem = float.Parse(label.Text.Replace(" zł", ""));
 
                         if (label.Name == "label3" && label.Text != "")
                             itemCount = Int32.Parse(label.Text);
@@ -190,7 +190,7 @@ namespace SUS
                             itemCount = (int)((CustomNumericUpDown)label.Controls[0]).Value;
 
                         if (label.Name == "label4")
-                            label.Text = $"{pricePerItem * itemCount} zł";
+                            label.Text = $"{Math.Round(pricePerItem * itemCount, 2)} zł";
                     }
                 }
             }

@@ -15,6 +15,7 @@ namespace SUS
     {
         private CustomCombo customComboCompanies;
         private CustomNumericUpDown? cn;
+        private List<Ware>? wares;
         public StwórzZamówienie()
         {
             InitializeComponent();
@@ -34,19 +35,31 @@ namespace SUS
                 InnerBorderColor = BackColor,
                 ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
                 ForeColor = Color.White,
-                Items = { "Firma1", "Firma2", "Firma3" }, // viable companies
             };
+            customComboCompanies.Items.AddRange(Global.GetSellers().Select(x => x.Name).ToArray()); // viable companies
+            customComboCompanies.SelectedIndexChanged += CustomComboCompanies_SelectedIndexChanged;
             panelFilters.Controls.Add(customComboCompanies);
 
             CreateOrders();
             ExtensionMethods.StartAnim(this);
         }
 
+        private void CustomComboCompanies_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            CreateOrders();
+        }
+
         private void CreateOrders()
         {
             panelOrders.Controls.Clear();
 
-            int maxOrders = 20;
+            if (customComboCompanies!.SelectedIndex == -1)
+                return;
+
+            wares = new List<Ware>(Global.GetWaresFrom(customComboCompanies!.SelectedIndex + 1));
+            //wares.ForEach(x => MessageBox.Show($"{x.Name}"));
+
+            int maxOrders = wares.Count;
             for (int i = 0; i < maxOrders; i++)
             {
                 Based based = new Based()
@@ -60,7 +73,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { "towar" + i.ToString(), $"420 zł", "0", $"0 zł" }, true); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{wares[i].Name}", $"{wares[i].Price} zł", $"0", $"0 zł" }, true); // swaps label names to correct ones
                         if (l.Name == "label3")
                         {
                             //l.BackColor = Color.FromArgb(50, 99, 212, 113);
@@ -102,8 +115,21 @@ namespace SUS
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            List<WareStack> wareStacks = new List<WareStack>();
             // do smth
             //CustomNumericUpDown.GetValues(panelOrders).ForEach(x => MessageBox.Show(x.ToString()));
+            for (int i = 0; i < wares!.Count; i++) 
+            {
+                //MessageBox.Show($"{CustomNumericUpDown.GetValues(panelOrders)[i]}");
+                decimal wareCount = CustomNumericUpDown.GetValues(panelOrders)[i];
+                if (wareCount <= 0)
+                    continue;
+
+                Ware ware = new(wares[i].Id, wares[i].Name, wares[i].SellerId, wares[i].Price);
+                WareStack wareStack = new(ware, (int)wareCount);
+                wareStacks.Add(wareStack);
+            }
+            Global.NewOrder(wares[0].SellerId, ORDER_STATUS.PENDING, wareStacks.ToArray(), out string err);
             ExtensionMethods.SwitchForm(this, new PanelZamówienia());
         }
 
