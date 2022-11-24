@@ -418,7 +418,7 @@ namespace SUS
                                     (int)reader["seller_id"],
                                     (DateTime)reader["creation_time"], 
                                     (ORDER_STATUS)(byte)reader["status"],
-                                    new());
+                                    Array.Empty<WareStack>()));
                 stacksTemp.Add((string)reader["wares"]);
                 //MessageBox.Show($"GLOBAL MESSAGE: {stacks}");
             }
@@ -426,7 +426,9 @@ namespace SUS
             for (int i = 0; i < orders.Count; i++)
             {
                 ParseWareStacks(stacksTemp[i], out var stacks);
-                orders[i].Wares = stacks;
+                var retOrder = orders[i];
+                retOrder.Wares = stacks;
+                orders[i] = retOrder;
             }
 
             return orders.ToArray();
