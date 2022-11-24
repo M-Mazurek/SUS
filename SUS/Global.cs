@@ -18,6 +18,7 @@ namespace SUS
     public record struct Ware(int Id, string Name, int SellerId, float Price);
     public record struct Order(int Id, int SellerId, DateTime CreationTime, ORDER_STATUS Status, WareStack[] Wares);
     public record struct WareStack(Ware Ware, int Amount);
+    public record struct Correction(int Id, int OrderId, DateTime CreationTime, WareStack[] InexactWares);
     public static class Global
     {
         public readonly static string DIR;
@@ -168,7 +169,6 @@ namespace SUS
             return cmd.ExecuteNonQuery() == 1;
         }
         #endregion
-
         #region wares
         public static bool AddSeller(string name, out string err)
         {
@@ -432,6 +432,66 @@ namespace SUS
             }
 
             return orders.ToArray();
+        }
+
+        public static void ConfirmOrder(int orderId)
+        {
+            string cmdtext = "UPDATE orders SET status = 2 WHERE id = @id";
+            SqlCommand cmd = new(cmdtext, CONN);
+            cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@id"].Value = orderId;
+
+            cmd.ExecuteNonQuery();
+        }
+        #endregion
+        #region corrections
+        public static bool NewCorrection(int orderId, WareStack[] stacks, out string err)
+        {
+            err = String.Empty;
+            string cmdText = "INSERT INTO corrections (order_id, creation_time, inexact_wares) VALUES (@order_id, @creation_time, @inexact_wares)";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@order_id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@order_id"].Value = orderId;
+            cmd.Parameters.Add("@creation_time", System.Data.SqlDbType.DateTime);
+            cmd.Parameters["@creation_time"].Value = DateTime.Now;
+            cmd.Parameters.Add("@inexact_wares", System.Data.SqlDbType.VarChar, 255);
+            cmd.Parameters["@inexact_wares"].Value = stacks.ToDBString();
+
+            cmd.ExecuteNonQuery();
+
+            return true;
+        }
+
+        public static Correction[] GetCorrections(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            List<Correction> corrs = new();
+            string cmdText = "SELECT * FROM corrections WHERE creation_time >= @date_from AND creation_time <= @date_to";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@date_from", System.Data.SqlDbType.DateTime);
+            cmd.Parameters["@date_from"].Value = dateFrom is null ? DateTime.Parse("2010-01-01T00:00:00.000") : dateFrom;
+            cmd.Parameters.Add("@date_to", System.Data.SqlDbType.DateTime);
+            cmd.Parameters["@date_to"].Value = dateTo is null ? DateTime.Parse("2050-01-01T00:00:00.000") : dateTo;
+
+            var reader = cmd.ExecuteReader();
+            List<string> stacksTemp = new();
+            while (reader.Read())
+            {
+                corrs.Add(new((int)reader["id"],
+                                    (int)reader["order_id"],
+                                    (DateTime)reader["creation_time"],
+                                    Array.Empty<WareStack>()));
+                stacksTemp.Add((string)reader["inexact_wares"]);
+            }
+            reader.Close();
+            for (int i = 0; i < corrs.Count; i++)
+            {
+                ParseWareStacks(stacksTemp[i], out var stacks);
+                var retOrder = corrs[i];
+                retOrder.InexactWares = stacks;
+                corrs[i] = retOrder;
+            }
+
+            return corrs.ToArray();
         }
         #endregion
     }
