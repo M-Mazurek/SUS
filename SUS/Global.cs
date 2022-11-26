@@ -14,11 +14,13 @@ namespace SUS
         PENDING = 1,
         CONFIRMED = 2
     }
+
     public record struct Seller(int Id, string Name);
     public record struct Ware(int Id, string Name, int SellerId, float Price);
     public record struct Order(int Id, int SellerId, DateTime CreationTime, ORDER_STATUS Status, WareStack[] Wares);
     public record struct WareStack(Ware Ware, int Amount);
     public record struct Correction(int Id, int OrderId, DateTime CreationTime, WareStack[] InexactWares);
+    public record struct HistoryEvent(string Text, DateTime EventTime);
     public static class Global
     {
         private static WareStack[] _storageUnit = Array.Empty<WareStack>();
@@ -110,6 +112,7 @@ namespace SUS
             _cmd.ExecuteNonQuery();
 
             err = String.Empty;
+            NewEvent($"Zarejstrowano użytkownika: {login}");
             return true;
         }
 
@@ -198,6 +201,7 @@ namespace SUS
             _cmd.ExecuteNonQuery();
 
             err = String.Empty;
+            NewEvent($"Dodano sprzedawcę: {name}");
             return true;
         }
 
@@ -279,6 +283,7 @@ namespace SUS
             __cmd.ExecuteNonQuery();
 
             err = String.Empty;
+            NewEvent($"Dodano towar: {name}");
             return true;
         }
 
@@ -389,7 +394,7 @@ namespace SUS
             cmd.Parameters["@wares"].Value = stacks.ToDBString();
 
             cmd.ExecuteNonQuery();
-
+            NewEvent($"Dodano zamówienie.");
             return true;
         }
 
@@ -483,6 +488,7 @@ namespace SUS
             {
                 ChangeWareAmount(GetWareAmount(x.Ware.Id) + x.Amount, x.Ware.Id);
             });
+            NewEvent($"Potwierdzono zamówienie nr. {order.Id.ToString().PadLeft(5, '0')}");
         }
         #endregion
         #region corrections
@@ -499,7 +505,7 @@ namespace SUS
             cmd.Parameters["@inexact_wares"].Value = stacks.ToDBString();
 
             cmd.ExecuteNonQuery();
-
+            NewEvent($"Dodano korektę do zamówienia nr. {orderId.ToString().PadLeft(5, '0')}");
             return true;
         }
 
@@ -573,6 +579,31 @@ namespace SUS
         public static int GetWareAmount(int wareId)
         {
             return _storageUnit.ToList().Find(x => x.Ware.Id == wareId).Amount;
+        }
+        #endregion
+        #region history
+        private static void NewEvent(string text)
+        {
+            string cmdText = "INSERT INTO history VALUES (@text, @event_time)";
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@text", System.Data.SqlDbType.NVarChar, 255);
+            cmd.Parameters["@text"].Value = text;
+            cmd.Parameters.Add("@event_time", System.Data.SqlDbType.DateTime);
+            cmd.Parameters["@event_time"].Value = DateTime.Now;
+
+            cmd.ExecuteNonQuery();
+        }
+        public static HistoryEvent[] GetEvents()
+        {
+            List<HistoryEvent> events = new();
+            string cmdText = "SELECT * FROM history";
+            SqlCommand cmd = new(cmdText, CONN);
+            var reader = cmd.ExecuteReader();
+            while(reader.Read())
+            {
+                events.Add(new((string)reader[0], (DateTime)reader[1]));
+            }
+            return events.ToArray();
         }
         #endregion
     }
