@@ -27,7 +27,10 @@ namespace SUS
         private void CreateOrders()
         {
             panelOrders.Controls.Clear();
-            int maxOrders = 15;
+
+            List<Correction> corrections = new List<Correction>(Global.GetCorrections());
+
+            int maxOrders = corrections.Count;
             for (int i = 0; i < maxOrders; i++)
             {
                 Based based = new Based()
@@ -42,7 +45,7 @@ namespace SUS
                     {
                         l.Click += Based_Click;
                         ExtensionMethods.SetupLabels(l, new int[] { lbNrKorekty.Width, lbKorektaZamow.Width, lbFirma.Width, lbData.Width }, new int[] { lbNrKorekty.Location.X, lbKorektaZamow.Location.X, lbFirma.Location.X, lbData.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { $"{i}", $"{i}", $"Firma{i}", $"19/10/2022" }, false); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{corrections[i].Id.ToString().PadLeft(4, '0')}", $"{corrections[i].OrderId.ToString().PadLeft(4, '0')}", $"{Global.GetSellerName(Global.GetOrderById(corrections[i].OrderId).FirstOrDefault().SellerId)}", $"{corrections[i].CreationTime}" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);

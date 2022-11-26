@@ -393,6 +393,40 @@ namespace SUS
             return true;
         }
 
+        public static Order[] GetOrderById(int orderId)
+        {
+            List<Order> orders = new();
+            string cmdText = "SELECT * FROM orders WHERE id = @id";
+           
+            SqlCommand cmd = new(cmdText, CONN);
+            cmd.Parameters.Add("@id", System.Data.SqlDbType.Int);
+            cmd.Parameters["@id"].Value = orderId;
+            
+            var reader = cmd.ExecuteReader();
+            List<string> stacksTemp = new();
+            while (reader.Read())
+            {
+                //MessageBox.Show($"GLOBAL PARSE: {ParseWareStacks((string)reader["wares"], out var stacks)}");
+                orders.Add(new((int)reader["id"],
+                                    (int)reader["seller_id"],
+                                    (DateTime)reader["creation_time"],
+                                    (ORDER_STATUS)(byte)reader["status"],
+                                    Array.Empty<WareStack>()));
+                stacksTemp.Add((string)reader["wares"]);
+                //MessageBox.Show($"GLOBAL MESSAGE: {stacks}");
+            }
+            reader.Close();
+            for (int i = 0; i < orders.Count; i++)
+            {
+                ParseWareStacks(stacksTemp[i], out var stacks);
+                var retOrder = orders[i];
+                retOrder.Wares = stacks;
+                orders[i] = retOrder;
+            }
+
+            return orders.ToArray();
+        }
+
         public static Order[] GetOrders(int sellerId = -1, DateTime? dateFrom = null, DateTime? dateTo = null, ORDER_STATUS status = ORDER_STATUS.PENDING | ORDER_STATUS.CONFIRMED)
         {
             List<Order> orders = new();
@@ -487,7 +521,7 @@ namespace SUS
                                     (int)reader["order_id"],
                                     (DateTime)reader["creation_time"],
                                     Array.Empty<WareStack>()));
-                stacksTemp.Add((string)reader["inexact_wares"]);
+                stacksTemp.Add((string)reader["inexact_goods"]);
             }
             reader.Close();
             for (int i = 0; i < corrs.Count; i++)

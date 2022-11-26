@@ -40,6 +40,10 @@
             this.txtTowar = new System.Windows.Forms.TextBox();
             this.btnCreate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panelFilters.SuspendLayout();
             this.SuspendLayout();
@@ -119,6 +123,10 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            this.panelFilters.Controls.Add(this.dtpEnd);
+            this.panelFilters.Controls.Add(this.dtpStart);
+            this.panelFilters.Controls.Add(this.label3);
+            this.panelFilters.Controls.Add(this.label2);
             this.panelFilters.Controls.Add(this.txtTowar);
             this.panelFilters.Controls.Add(this.btnCreate);
             this.panelFilters.Controls.Add(this.label1);
@@ -162,6 +170,44 @@
             this.label1.Text = "Numer zamówienia";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // dtpEnd
+            // 
+            this.dtpEnd.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dtpEnd.Location = new System.Drawing.Point(0, 247);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(200, 23);
+            this.dtpEnd.TabIndex = 20;
+            // 
+            // dtpStart
+            // 
+            this.dtpStart.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dtpStart.Location = new System.Drawing.Point(0, 147);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(200, 23);
+            this.dtpStart.TabIndex = 19;
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(10, 197);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(180, 25);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Wybierz Datę Końcową";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(3, 97);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(194, 25);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Wybierz Datę Początkową";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // PanelKorekty
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -198,5 +244,9 @@
         private Button btnCreate;
         private Label label1;
         private TextBox txtTowar;
+        private DateTimePicker dtpEnd;
+        private DateTimePicker dtpStart;
+        private Label label3;
+        private Label label2;
     }
 }
