@@ -495,14 +495,14 @@ namespace SUS
         public static bool NewCorrection(int orderId, WareStack[] stacks, out string err)
         {
             err = String.Empty;
-            string cmdText = "INSERT INTO corrections (order_id, creation_time, inexact_wares) VALUES (@order_id, @creation_time, @inexact_wares)";
+            string cmdText = "INSERT INTO corrections (order_id, creation_time, inexact_goods) VALUES (@order_id, @creation_time, @inexact_goods)";
             SqlCommand cmd = new(cmdText, CONN);
             cmd.Parameters.Add("@order_id", System.Data.SqlDbType.Int);
             cmd.Parameters["@order_id"].Value = orderId;
             cmd.Parameters.Add("@creation_time", System.Data.SqlDbType.DateTime);
             cmd.Parameters["@creation_time"].Value = DateTime.Now;
-            cmd.Parameters.Add("@inexact_wares", System.Data.SqlDbType.VarChar, 255);
-            cmd.Parameters["@inexact_wares"].Value = stacks.ToDBString();
+            cmd.Parameters.Add("@inexact_goods", System.Data.SqlDbType.VarChar, 255);
+            cmd.Parameters["@inexact_goods"].Value = stacks.ToDBString();
 
             cmd.ExecuteNonQuery();
             NewEvent($"Dodano korektę do zamówienia nr. {orderId.ToString().PadLeft(5, '0')}");
@@ -564,7 +564,7 @@ namespace SUS
 
         public static void ChangeWareAmount(int amount, int wareId)
         {
-            string cmdText = "UPDATE storage_unit SET amount = @amount WHERE ware_id = @ware_id";
+            string cmdText = "UPDATE storage_unit SET amount = @amount WHERE goods_id = @ware_id";
             SqlCommand cmd = new(cmdText, CONN);
 
             cmd.Parameters.Add("@ware_id", System.Data.SqlDbType.Int);
@@ -603,7 +603,8 @@ namespace SUS
             {
                 events.Add(new((string)reader[0], (DateTime)reader[1]));
             }
-            return events.ToArray();
+            reader.Close();
+            return events.OrderByDescending(x => x.EventTime.Ticks).ToArray();
         }
         #endregion
     }

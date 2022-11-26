@@ -31,11 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StwórzKorekty));
             this.panelFilters = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnConfirm = new System.Windows.Forms.Button();
-            this.btnReset = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lbSuma = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbCena = new System.Windows.Forms.Label();
             this.lbIlosc = new System.Windows.Forms.Label();
@@ -44,7 +41,6 @@
             this.panelOrders = new System.Windows.Forms.Panel();
             this.menu1 = new SUS.Menu();
             this.panelFilters.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,8 +48,6 @@
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
             this.panelFilters.Controls.Add(this.label1);
-            this.panelFilters.Controls.Add(this.btnConfirm);
-            this.panelFilters.Controls.Add(this.btnReset);
             this.panelFilters.Controls.Add(this.btnBack);
             this.panelFilters.Location = new System.Drawing.Point(20, 35);
             this.panelFilters.Name = "panelFilters";
@@ -71,32 +65,6 @@
             this.label1.Text = "Nazwa Firmy";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnConfirm
-            // 
-            this.btnConfirm.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
-            this.btnConfirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConfirm.ForeColor = System.Drawing.Color.White;
-            this.btnConfirm.Location = new System.Drawing.Point(27, 439);
-            this.btnConfirm.Name = "btnConfirm";
-            this.btnConfirm.Size = new System.Drawing.Size(150, 30);
-            this.btnConfirm.TabIndex = 13;
-            this.btnConfirm.Text = "Zatwierdź";
-            this.btnConfirm.UseVisualStyleBackColor = true;
-            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
-            // 
-            // btnReset
-            // 
-            this.btnReset.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
-            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReset.ForeColor = System.Drawing.Color.White;
-            this.btnReset.Location = new System.Drawing.Point(27, 403);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(150, 30);
-            this.btnReset.TabIndex = 11;
-            this.btnReset.Text = "Resetuj";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
             // btnBack
             // 
             this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
@@ -113,23 +81,10 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
-            this.panel2.Controls.Add(this.lbSuma);
             this.panel2.Location = new System.Drawing.Point(243, 525);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(722, 30);
             this.panel2.TabIndex = 13;
-            // 
-            // lbSuma
-            // 
-            this.lbSuma.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lbSuma.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lbSuma.ForeColor = System.Drawing.Color.White;
-            this.lbSuma.Location = new System.Drawing.Point(0, 0);
-            this.lbSuma.Name = "lbSuma";
-            this.lbSuma.Size = new System.Drawing.Size(722, 30);
-            this.lbSuma.TabIndex = 0;
-            this.lbSuma.Text = "Suma:";
-            this.lbSuma.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // panel1
             // 
@@ -151,7 +106,7 @@
             this.lbCena.Name = "lbCena";
             this.lbCena.Size = new System.Drawing.Size(120, 30);
             this.lbCena.TabIndex = 3;
-            this.lbCena.Text = "Cena";
+            this.lbCena.Text = "Data Zamówienia";
             this.lbCena.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbIlosc
@@ -162,7 +117,7 @@
             this.lbIlosc.Name = "lbIlosc";
             this.lbIlosc.Size = new System.Drawing.Size(100, 30);
             this.lbIlosc.TabIndex = 2;
-            this.lbIlosc.Text = "Ilość";
+            this.lbIlosc.Text = "Status";
             this.lbIlosc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbCenaSz
@@ -173,7 +128,7 @@
             this.lbCenaSz.Name = "lbCenaSz";
             this.lbCenaSz.Size = new System.Drawing.Size(130, 30);
             this.lbCenaSz.TabIndex = 1;
-            this.lbCenaSz.Text = "Cena za Sztukę";
+            this.lbCenaSz.Text = "Nr Zamówienia";
             this.lbCenaSz.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbTowar
@@ -184,7 +139,7 @@
             this.lbTowar.Name = "lbTowar";
             this.lbTowar.Size = new System.Drawing.Size(380, 30);
             this.lbTowar.TabIndex = 0;
-            this.lbTowar.Text = "Towar";
+            this.lbTowar.Text = "Towary";
             this.lbTowar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelOrders
@@ -221,7 +176,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SUS : Stwórz Korekty";
             this.panelFilters.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -231,11 +185,8 @@
 
         private Panel panelFilters;
         private Label label1;
-        private Button btnConfirm;
-        private Button btnReset;
         private Button btnBack;
         private Panel panel2;
-        private Label lbSuma;
         private Panel panel1;
         private Label lbCena;
         private Label lbIlosc;

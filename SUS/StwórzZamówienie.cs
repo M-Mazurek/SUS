@@ -115,6 +115,8 @@ namespace SUS
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            if (customComboCompanies!.SelectedIndex == -1)
+                return;
             List<WareStack> wareStacks = new List<WareStack>();
             // do smth
             //CustomNumericUpDown.GetValues(panelOrders).ForEach(x => MessageBox.Show(x.ToString()));

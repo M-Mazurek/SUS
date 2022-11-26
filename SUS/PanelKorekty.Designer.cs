@@ -37,13 +37,14 @@
             this.lbNrKorekty = new System.Windows.Forms.Label();
             this.panelOrders = new System.Windows.Forms.Panel();
             this.panelFilters = new System.Windows.Forms.Panel();
-            this.txtTowar = new System.Windows.Forms.TextBox();
-            this.btnCreate = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.btnFilter = new System.Windows.Forms.Button();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.txtTowar = new System.Windows.Forms.TextBox();
+            this.btnCreate = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panelFilters.SuspendLayout();
             this.SuspendLayout();
@@ -123,6 +124,7 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            this.panelFilters.Controls.Add(this.btnFilter);
             this.panelFilters.Controls.Add(this.dtpEnd);
             this.panelFilters.Controls.Add(this.dtpStart);
             this.panelFilters.Controls.Add(this.label3);
@@ -135,40 +137,18 @@
             this.panelFilters.Size = new System.Drawing.Size(200, 520);
             this.panelFilters.TabIndex = 5;
             // 
-            // txtTowar
+            // btnFilter
             // 
-            this.txtTowar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.txtTowar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTowar.ForeColor = System.Drawing.Color.White;
-            this.txtTowar.Location = new System.Drawing.Point(15, 45);
-            this.txtTowar.Name = "txtTowar";
-            this.txtTowar.Size = new System.Drawing.Size(170, 23);
-            this.txtTowar.TabIndex = 16;
-            this.txtTowar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtTowar.TextChanged += new System.EventHandler(this.txtTowar_TextChanged);
-            // 
-            // btnCreate
-            // 
-            this.btnCreate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
-            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreate.ForeColor = System.Drawing.Color.White;
-            this.btnCreate.Location = new System.Drawing.Point(27, 478);
-            this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(150, 30);
-            this.btnCreate.TabIndex = 4;
-            this.btnCreate.Text = "Utwórz korektę";
-            this.btnCreate.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(10, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(180, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Numer zamówienia";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFilter.ForeColor = System.Drawing.Color.White;
+            this.btnFilter.Location = new System.Drawing.Point(27, 442);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(150, 30);
+            this.btnFilter.TabIndex = 21;
+            this.btnFilter.Text = "Filtruj";
+            this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
             // dtpEnd
             // 
@@ -207,6 +187,42 @@
             this.label2.TabIndex = 17;
             this.label2.Text = "Wybierz Datę Początkową";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtTowar
+            // 
+            this.txtTowar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.txtTowar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTowar.ForeColor = System.Drawing.Color.White;
+            this.txtTowar.Location = new System.Drawing.Point(15, 45);
+            this.txtTowar.Name = "txtTowar";
+            this.txtTowar.Size = new System.Drawing.Size(170, 23);
+            this.txtTowar.TabIndex = 16;
+            this.txtTowar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTowar.TextChanged += new System.EventHandler(this.txtTowar_TextChanged);
+            // 
+            // btnCreate
+            // 
+            this.btnCreate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCreate.ForeColor = System.Drawing.Color.White;
+            this.btnCreate.Location = new System.Drawing.Point(27, 478);
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Size = new System.Drawing.Size(150, 30);
+            this.btnCreate.TabIndex = 4;
+            this.btnCreate.Text = "Utwórz korektę";
+            this.btnCreate.UseVisualStyleBackColor = true;
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(10, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(180, 25);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Numer zamówienia";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PanelKorekty
             // 
@@ -248,5 +264,6 @@
         private DateTimePicker dtpStart;
         private Label label3;
         private Label label2;
+        private Button btnFilter;
     }
 }
