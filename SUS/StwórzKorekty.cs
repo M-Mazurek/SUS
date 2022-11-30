@@ -14,6 +14,7 @@ namespace SUS
     {
         private CustomCombo customComboCompanies;
         private List<Order>? orders;
+        private List<int>? sellerIds;
         public StwórzKorekty()
         {
             InitializeComponent();
@@ -35,6 +36,9 @@ namespace SUS
                 ForeColor = Color.White,
             };
             customComboCompanies.Items.AddRange(Global.GetSellers().Select(x => x.Name).ToArray()); // viable companies
+
+            sellerIds = new List<int>(Global.GetSellers().Select(x => x.Id).ToArray());
+
             customComboCompanies.SelectedIndexChanged += CustomComboCompanies_SelectedIndexChanged;
             panelFilters.Controls.Add(customComboCompanies);
 
@@ -52,7 +56,7 @@ namespace SUS
             if (customComboCompanies!.SelectedIndex == -1)
                 return;
 
-            orders = new List<Order>(Global.GetOrders(customComboCompanies!.SelectedIndex + 1));
+            orders = new List<Order>(Global.GetOrders(sellerIds![customComboCompanies!.SelectedIndex]));
 
             int maxOrders = orders.Count;
             for (int i = 0; i < maxOrders; i++)
