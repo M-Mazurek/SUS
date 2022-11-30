@@ -75,7 +75,7 @@ namespace SUS
                         l.Click += Based_Click;
                         //orders[i].Wares.ToList().Select(x => x.Ware.Price);
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { $"{String.Join(", ", orders[i].Wares.ToList().Select(x => x.Ware.Name))}", $"{orders[i].Id.ToString().PadLeft(4, '0')}", $"{ExtensionMethods.SetupStatus(orders[i].Status)}", $"{orders[i].CreationTime}" }, false); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { orders[i].Wares.ToList().Select(x => x.Ware.Name).Count() > 1 ? $"{ orders[i].Wares.ToList().Select(x => x.Ware.Name).FirstOrDefault() + "..." }" : $"{ orders[i].Wares.ToList().Select(x => x.Ware.Name).FirstOrDefault() }", $"{orders[i].Id.ToString().PadLeft(4, '0')}", $"{ExtensionMethods.SetupStatus(orders[i].Status)}", $"{orders[i].CreationTime}" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);

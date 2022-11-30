@@ -564,15 +564,34 @@ namespace SUS
 
         public static void ChangeWareAmount(int amount, int wareId)
         {
-            string cmdText = "UPDATE storage_unit SET amount = @amount WHERE goods_id = @ware_id";
-            SqlCommand cmd = new(cmdText, CONN);
+            if (GetWareAmount(wareId) > 0)
+            {
+                string cmdText = "UPDATE storage_unit SET amount = @amount WHERE goods_id = @ware_id";
+                SqlCommand cmd = new(cmdText, CONN);
 
-            cmd.Parameters.Add("@ware_id", System.Data.SqlDbType.Int);
-            cmd.Parameters["@ware_id"].Value = wareId;
-            cmd.Parameters.Add("@amount", System.Data.SqlDbType.Int);
-            cmd.Parameters["@amount"].Value = amount;
+                cmd.Parameters.Add("@ware_id", System.Data.SqlDbType.Int);
+                cmd.Parameters["@ware_id"].Value = wareId;
+                cmd.Parameters.Add("@amount", System.Data.SqlDbType.Int);
+                cmd.Parameters["@amount"].Value = amount;
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+                //MessageBox.Show($"{String.Join(',',_storageUnit)} \nWareID {wareId}, Amount {amount}");
+
+                _storageUnit[_storageUnit.ToList().FindIndex(x => x.Ware.Id == wareId)].Amount = amount;
+                return;
+            }
+            string _cmdText = "INSERT INTO storage_unit VALUES (@ware_id, @amount)";
+            SqlCommand _cmd = new(_cmdText, CONN);
+
+            _cmd.Parameters.Add("@ware_id", System.Data.SqlDbType.Int);
+            _cmd.Parameters["@ware_id"].Value = wareId;
+            _cmd.Parameters.Add("@amount", System.Data.SqlDbType.Int);
+            _cmd.Parameters["@amount"].Value = amount;
+
+            _cmd.ExecuteNonQuery();
+            //MessageBox.Show($"{String.Join(',',_storageUnit)} \nWareID {wareId}, Amount {amount}");
+
+            SyncStorageUnit();
             _storageUnit[_storageUnit.ToList().FindIndex(x => x.Ware.Id == wareId)].Amount = amount;
         }
 

@@ -112,6 +112,9 @@ namespace SUS
         {
             //Filter or smth
 
+            if (customComboCompanies!.SelectedIndex == -1)
+                MessageBox.Show($"Nie wybrano firmy.");
+
             // call paint func
             CreateOrders();
         }
