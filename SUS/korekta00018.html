@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+            <html lang="pl">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>00018</title>
+                <style>
+                    * {
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-weight: 500;
+                        padding: 10px;
+                        margin-bottom: 25px;
+                    }
+                    .top {
+                        text-align: end;
+                    }
+                    .top>img {
+                        float: left;
+                        margin-top: -20px;
+                    }
+                    .title {
+                        border-top: 3px solid black;
+                        border-bottom: 3px solid black;
+                        font-size: x-large;
+                        font-weight: 700;
+                        background-color: blanchedalmond;
+                    }
+                    .info {
+                        width: fit-content;
+                        max-width: 45%;
+                        font-weight: 600;
+                        float: left ;
+                        margin-top: -40px;
+                    }
+                    .info:last-child {
+                        float: right;
+                    }
+                    .info>p {
+                        border-bottom: 3px solid black;
+                        font-weight: 700;
+                        font-size: large;
+                    }
+                    .wares {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .wares th, .wares td {
+                        border: 2px solid black;
+                        padding: 3px;
+                    }
+                    .wares tr:nth-child(odd):not(:nth-child(1)) {
+                        background-color: aliceblue;
+                    }
+                    .wares th {
+                        font-weight: bold;
+                    }
+                    .wares tr:first-child {
+                        background-color: blanchedalmond;
+                    }
+            </style>
+            </head>
+            <body>
+                <div class="top">
+                    <img src="logo.png" alt="logo">
+                    <span>Data wystawienia faktury: 30.11.2022</span><br/>
+                    <span>Data wystawienia korekty: 30.11.2022</span>
+                </div>
+                <div class="title">
+                    Korekta do faktury nr: 00018
+                </div>
+                <div class="info">
+                    <p>Sprzedawca</p>
+                    KARCZEMIX<br/>
+                    ul. Wróblowa 47<br/>
+                    86-686<br/><br/>
+                    <span>NIP:</span> 1943361400<br/>
+                    <span>e-mail:</span> karczemix-contact@gmail.com<br/><br/>
+                    Nr konta: 00 1122 3344 5566 7788 9999 0000
+                </div>
+                <div class="info">
+                    <p>Nabywca</p>
+                    Brubelek sp. z o.o.<br/>
+                    ul. Wróblowa 19/11<br/>
+                    96-240<br/><br/>
+                    <span>NIP:</span> 8564342193<br/>
+                    <span>e-mail:</span> biblestudioes001@gmail.com<br/><br/>
+                    Nr konta: 00 2211 4433 6655 8877 0000 9999
+                </div>
+                <table class="wares">
+                    <tr>
+                        <th>lp.</th>
+                        <th>Nazwa towaru</th>
+                        <th>Jednostka</th>
+                        <th>Przewidywana ilość</th>
+                        <th>Otrzymana ilość</th>
+                        <th>Różnica</th>
+                    </tr>
+                         
+                </table>
+            </body>
+            </html>

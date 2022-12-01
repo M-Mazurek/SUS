@@ -28,12 +28,11 @@ namespace SUS
         [STAThread]
         static void Main()
         {
-            //_hookID = SetHook(_proc);
-            //Global.Init();
-            //ApplicationConfiguration.Initialize();
-            //Application.Run(new Logowanie());
-            //UnhookWindowsHookEx(_hookID);
-            Global.GenerateInvoicePDF(Global.GetOrders()[0]);
+            _hookID = SetHook(_proc);
+            Global.Init();
+            ApplicationConfiguration.Initialize();
+            Application.Run(new Logowanie());
+            UnhookWindowsHookEx(_hookID);
         }
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)

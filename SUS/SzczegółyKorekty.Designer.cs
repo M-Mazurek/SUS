@@ -49,6 +49,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.menu1 = new SUS.Menu();
+            this.buttonDowload = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelFilters.SuspendLayout();
@@ -142,6 +143,7 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            this.panelFilters.Controls.Add(this.buttonDowload);
             this.panelFilters.Controls.Add(this.btnConfirm);
             this.panelFilters.Controls.Add(this.btnBack);
             this.panelFilters.Controls.Add(this.txtKorektaId);
@@ -284,6 +286,19 @@
             this.menu1.Size = new System.Drawing.Size(984, 23);
             this.menu1.TabIndex = 10;
             // 
+            // buttonDowload
+            // 
+            this.buttonDowload.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.buttonDowload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDowload.ForeColor = System.Drawing.Color.White;
+            this.buttonDowload.Location = new System.Drawing.Point(27, 439);
+            this.buttonDowload.Name = "buttonDowload";
+            this.buttonDowload.Size = new System.Drawing.Size(150, 30);
+            this.buttonDowload.TabIndex = 13;
+            this.buttonDowload.Text = "Pobierz korektę";
+            this.buttonDowload.UseVisualStyleBackColor = true;
+            this.buttonDowload.Click += new System.EventHandler(this.buttonDowload_Click);
+            // 
             // SzczegółyKorekty
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -331,5 +346,6 @@
         private Label label3;
         private Label label1;
         private Menu menu1;
+        private Button buttonDowload;
     }
 }

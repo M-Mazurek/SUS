@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic.Logging;
+﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -27,7 +27,7 @@ namespace SUS
         private static WareStack[] _storageUnit = Array.Empty<WareStack>();
         public readonly static string DIR;
         readonly static SqlConnection CONN;
-        const string CHROME = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+        readonly static string CHROME = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
 
         public static (string Login, byte Type) CurrentUser { get; private set; }
 
@@ -35,6 +35,8 @@ namespace SUS
 
         static Global() 
         {
+            while (!File.Exists(CHROME))
+                CHROME = Interaction.InputBox("Google Chrome nie istnieje pod domyślną ścieżką.\nW celu poprawnego generowania dokumentów podaj ścieżkę do tego programu.", DefaultResponse: CHROME);
             DIR = Directory.GetParent(System.IO.Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
             string dbPath = Path.Combine(DIR, "Database.mdf");
             string connStr = @$"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={dbPath};User ID=ni4;Password=g3r;Trusted_Connection=True;";
@@ -629,9 +631,9 @@ namespace SUS
         }
         #endregion
         #region pfds
-        public static string HTML2PDF(string htmlPath, string filename)
+        public static string HTML2PDF(string htmlPath, string filename, string dir)
         {
-            string output = Path.Combine(DIR, $"{filename}.pdf");
+            string output = Path.Combine(dir, filename + ".pdf");
             using Process p = new();
             p.StartInfo.FileName = CHROME;
             p.StartInfo.Arguments = $"--headless --disable-gpu --print-to-pdf={output} {htmlPath}";
@@ -648,10 +650,23 @@ namespace SUS
         }
         public static void GenerateInvoicePDF(Order order)
         {
+            FolderBrowserDialog fbd = new();
+            if (fbd.ShowDialog() != DialogResult.OK)
+                return;
             string idStr = order.Id.ToString().PadLeft(5, '0');
             string filename = $"faktura{idStr}";
             string seller = GetSellerName(order.SellerId);
             double nettoSum = 0, vatSum = 0, bruttoSum = 0;
+            string street = new string[]
+            {
+                "Słoneczna",
+                "Wróblowa",
+                "Dąbrowskiego",
+                "Hutnicza",
+                "Polna"
+            }[order.SellerId % 5];
+            int sellerSeed = seller.ToCharArray().Select(x => (int)x).Sum();
+            int streetNr = sellerSeed % 71;
             string html = $@"<!DOCTYPE html>
             <html lang=""pl"">
             <head>
@@ -716,7 +731,7 @@ namespace SUS
                         background-color: blanchedalmond;
                     }}
                     .sum {{
-                        margin-top: 120px;
+                        margin-top: 175px;
                         background-color: blanchedalmond;
                         font-weight: bold;
                         text-decoration: underline;
@@ -735,17 +750,17 @@ namespace SUS
                 <div class=""info"">
                     <p>Sprzedawca</p>
                     {seller}<br/>
-                    ul. chujwiegdzie 420<br/>
-                    00-000<br/><br/>
-                    <span>NIP:</span> 7452542421<br/>
-                    <span>e-mail:</span> {seller}-contact@gmail.com<br/><br/>
+                    ul. {street} {streetNr}<br/>
+                    {(sellerSeed % 100).ToString().PadLeft(2, '0')}-{(sellerSeed % 1000).ToString().PadLeft(3, '0')}<br/><br/>
+                    <span>NIP:</span> {Math.Abs(sellerSeed * 97341276 % 10000000000).ToString().PadRight(10, '0')}<br/>
+                    <span>e-mail:</span> {seller.ToLower()}-contact@gmail.com<br/><br/>
                     Nr konta: 00 1122 3344 5566 7788 9999 0000
                 </div>
                 <div class=""info"">
                     <p>Nabywca</p>
-                    Firma<br/>
-                    ul. Busha 9/11<br/>
-                    00-000<br/><br/>
+                    Brubelek sp. z o.o.<br/>
+                    ul. Wróblowa 19/11<br/>
+                    96-240<br/><br/>
                     <span>NIP:</span> 8564342193<br/>
                     <span>e-mail:</span> biblestudioes001@gmail.com<br/><br/>
                     Nr konta: 00 2211 4433 6655 8877 0000 9999
@@ -753,7 +768,7 @@ namespace SUS
                 <table class=""wares"">
                     <tr>
                         <th>lp.</th>
-                        <th>Nazwa towaru/usługi</th>
+                        <th>Nazwa towaru</th>
                         <th>Ilość</th>
                         <th>Jednostka</th>
                         <th>Cena netto</th>
@@ -799,15 +814,15 @@ namespace SUS
                     </tr>
                     <tr>
                         <td>23%</td>
-                        <td>{nettoSum}</td>
-                        <td>{vatSum}</td>
-                        <td>{bruttoSum}</td>
+                        <td>{Math.Round(nettoSum, 2)}</td>
+                        <td>{Math.Round(vatSum, 2)}</td>
+                        <td>{Math.Round(bruttoSum, 2)}</td>
                     </tr>
                     <tr>
                         <td>Razem</td>
-                        <td>{nettoSum}</td>
-                        <td>{vatSum}</td>
-                        <td>{bruttoSum}</td>
+                        <td>{Math.Round(nettoSum, 2)}</td>
+                        <td>{Math.Round(vatSum, 2)}</td>
+                        <td>{Math.Round(bruttoSum, 2)}</td>
                     </tr>
                 </table>
                 <h2 class=""sum"">Razem do zapłaty: {bruttoSum} zł</h2>
@@ -815,7 +830,149 @@ namespace SUS
             </html>";
             string path = Path.Combine(DIR, filename + ".html");
             File.WriteAllText(path, html);
-            OpenWithChrome(HTML2PDF(path, filename));
+            OpenWithChrome(HTML2PDF(path, filename, fbd.SelectedPath));
+        }
+        public static void GenerateCorrectionPDF(Correction corr)
+        {
+            FolderBrowserDialog fbd = new();
+            if (fbd.ShowDialog() != DialogResult.OK)
+                return;
+            Order order = GetOrderById(corr.OrderId)[0];
+            string idStr = order.Id.ToString().PadLeft(5, '0');
+            string filename = $"korekta{idStr}";
+            string seller = GetSellerName(order.SellerId);
+            string street = new string[]
+            {
+                "Słoneczna",
+                "Wróblowa",
+                "Dąbrowskiego",
+                "Hutnicza",
+                "Polna"
+            }[order.SellerId % 5];
+            int sellerSeed = seller.ToCharArray().Select(x => (int)x).Sum();
+            int streetNr = sellerSeed % 71;
+            string html = $@"<!DOCTYPE html>
+            <html lang=""pl"">
+            <head>
+                <meta charset=""UTF-8"">
+                <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
+                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                <title>{idStr}</title>
+                <style>
+                    * {{
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-weight: 500;
+                        padding: 10px;
+                        margin-bottom: 25px;
+                    }}
+                    .top {{
+                        text-align: end;
+                    }}
+                    .top>img {{
+                        float: left;
+                        margin-top: -20px;
+                    }}
+                    .title {{
+                        border-top: 3px solid black;
+                        border-bottom: 3px solid black;
+                        font-size: x-large;
+                        font-weight: 700;
+                        background-color: blanchedalmond;
+                    }}
+                    .info {{
+                        width: fit-content;
+                        max-width: 45%;
+                        font-weight: 600;
+                        float: left ;
+                        margin-top: -40px;
+                    }}
+                    .info:last-child {{
+                        float: right;
+                    }}
+                    .info>p {{
+                        border-bottom: 3px solid black;
+                        font-weight: 700;
+                        font-size: large;
+                    }}
+                    .wares {{
+                        border-collapse: collapse;
+                        width: 100%;
+                    }}
+                    .wares th, .wares td {{
+                        border: 2px solid black;
+                        padding: 3px;
+                    }}
+                    .wares tr:nth-child(odd):not(:nth-child(1)) {{
+                        background-color: aliceblue;
+                    }}
+                    .wares th {{
+                        font-weight: bold;
+                    }}
+                    .wares tr:first-child {{
+                        background-color: blanchedalmond;
+                    }}
+            </style>
+            </head>
+            <body>
+                <div class=""top"">
+                    <img src=""logo.png"" alt=""logo"">
+                    <span>Data wystawienia faktury: {order.CreationTime.ToShortDateString()}</span><br/>
+                    <span>Data wystawienia korekty: {corr.CreationTime.ToShortDateString()}</span>
+                </div>
+                <div class=""title"">
+                    Korekta do faktury nr: {idStr}
+                </div>
+                <div class=""info"">
+                    <p>Sprzedawca</p>
+                    {seller}<br/>
+                    ul. {street} {streetNr}<br/>
+                    {(sellerSeed % 100).ToString().PadLeft(2, '0')}-{(sellerSeed % 1000).ToString().PadLeft(3, '0')}<br/><br/>
+                    <span>NIP:</span> {Math.Abs(sellerSeed * 97341276 % 10000000000).ToString().PadRight(10, '0')}<br/>
+                    <span>e-mail:</span> {seller.ToLower()}-contact@gmail.com<br/><br/>
+                    Nr konta: 00 1122 3344 5566 7788 9999 0000
+                </div>
+                <div class=""info"">
+                    <p>Nabywca</p>
+                    Brubelek sp. z o.o.<br/>
+                    ul. Wróblowa 19/11<br/>
+                    96-240<br/><br/>
+                    <span>NIP:</span> 8564342193<br/>
+                    <span>e-mail:</span> biblestudioes001@gmail.com<br/><br/>
+                    Nr konta: 00 2211 4433 6655 8877 0000 9999
+                </div>
+                <table class=""wares"">
+                    <tr>
+                        <th>lp.</th>
+                        <th>Nazwa towaru</th>
+                        <th>Jednostka</th>
+                        <th>Przewidywana ilość</th>
+                        <th>Otrzymana ilość</th>
+                        <th>Różnica</th>
+                    </tr>
+                    {
+                        string.Join(' ',
+                        corr.InexactWares.ToList().Select((stack, i) =>
+                        {
+                            var _stack = order.Wares.First(x => x.Ware.Id == stack.Ware.Id);
+                            if (_stack.Amount == stack.Amount)
+                                return "";
+                            return $@"
+                            <tr>
+                                <td>{i + 1}.</td> 
+                                <td>{stack.Ware.Name}</td>
+                                <td>szt.</td>
+                                <td>{_stack.Amount}</td>
+                                <td>{stack.Amount}</td>
+                                <td>{-(_stack.Amount - stack.Amount)}</td>
+                            </tr>";
+                        }))
+                    }
+                </table>
+            </body>
+            </html>";
+            string path = Path.Combine(DIR, filename + ".html");
+            File.WriteAllText(path, html);
+            OpenWithChrome(HTML2PDF(path, filename, fbd.SelectedPath));
         }
         #endregion
     }

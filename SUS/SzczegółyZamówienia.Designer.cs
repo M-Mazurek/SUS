@@ -109,7 +109,6 @@
             this.btnPodglad.TabIndex = 11;
             this.btnPodglad.Text = "Podgląd faktury";
             this.btnPodglad.UseVisualStyleBackColor = true;
-            this.btnPodglad.Click += new System.EventHandler(this.btnPodglad_Click);
             // 
             // btnPobierz
             // 

@@ -78,5 +78,10 @@ namespace SUS
             Global.ConfirmOrder(Global.GetOrderById(correction.OrderId).FirstOrDefault());
             ExtensionMethods.SwitchForm(this, new PanelKorekty());
         }
+
+        private void buttonDowload_Click(object sender, EventArgs e)
+        {
+            Global.GenerateCorrectionPDF(correction);
+        }
     }
 }

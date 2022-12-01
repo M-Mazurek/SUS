@@ -80,12 +80,7 @@ namespace SUS
 
         private void btnPobierz_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void btnPodglad_Click(object sender, EventArgs e)
-        {
-
+            Global.GenerateInvoicePDF(order);
         }
 
         private void btnConfirm_Click(object sender, EventArgs e)
