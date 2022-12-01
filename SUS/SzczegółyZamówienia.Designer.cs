@@ -32,7 +32,6 @@
             this.menu1 = new SUS.Menu();
             this.panelFilters = new System.Windows.Forms.Panel();
             this.btnConfirm = new System.Windows.Forms.Button();
-            this.btnPodglad = new System.Windows.Forms.Button();
             this.btnPobierz = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.txtOrderId = new System.Windows.Forms.TextBox();
@@ -68,7 +67,6 @@
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
             this.panelFilters.Controls.Add(this.btnConfirm);
-            this.panelFilters.Controls.Add(this.btnPodglad);
             this.panelFilters.Controls.Add(this.btnPobierz);
             this.panelFilters.Controls.Add(this.btnBack);
             this.panelFilters.Controls.Add(this.txtOrderId);
@@ -97,18 +95,6 @@
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Visible = false;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
-            // 
-            // btnPodglad
-            // 
-            this.btnPodglad.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
-            this.btnPodglad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPodglad.ForeColor = System.Drawing.Color.White;
-            this.btnPodglad.Location = new System.Drawing.Point(27, 403);
-            this.btnPodglad.Name = "btnPodglad";
-            this.btnPodglad.Size = new System.Drawing.Size(150, 30);
-            this.btnPodglad.TabIndex = 11;
-            this.btnPodglad.Text = "Podgląd faktury";
-            this.btnPodglad.UseVisualStyleBackColor = true;
             // 
             // btnPobierz
             // 
@@ -359,7 +345,6 @@
         private Panel panel2;
         private Label lbSuma;
         private Button btnBack;
-        private Button btnPodglad;
         private Button btnPobierz;
         private Button btnConfirm;
     }

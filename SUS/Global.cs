@@ -27,7 +27,7 @@ namespace SUS
         private static WareStack[] _storageUnit = Array.Empty<WareStack>();
         public readonly static string DIR;
         readonly static SqlConnection CONN;
-        readonly static string CHROME = @"C\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+        readonly static string CHROME = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
 
         public static (string Login, byte Type) CurrentUser { get; private set; }
 
