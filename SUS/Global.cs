@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace SUS
 {
@@ -26,6 +27,7 @@ namespace SUS
         private static WareStack[] _storageUnit = Array.Empty<WareStack>();
         public readonly static string DIR;
         readonly static SqlConnection CONN;
+        const string CHROME = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
 
         public static (string Login, byte Type) CurrentUser { get; private set; }
 
@@ -570,6 +572,196 @@ namespace SUS
                 events.Add(new((string)reader[0], (DateTime)reader[1]));
             }
             return events.ToArray();
+        }
+        #endregion
+        #region pfds
+        public static string HTML2PDF(string htmlPath, string filename)
+        {
+            string output = Path.Combine(DIR, $"{filename}.pdf");
+            using Process p = new();
+            p.StartInfo.FileName = CHROME;
+            p.StartInfo.Arguments = $"--headless --disable-gpu --print-to-pdf={output} {htmlPath}";
+            p.Start();
+            p.WaitForExit();
+            return output;
+        }
+        public static void OpenWithChrome(string path)
+        {
+            using Process p = new();
+            p.StartInfo.FileName = CHROME;
+            p.StartInfo.Arguments = path;
+            p.Start();
+        }
+        public static void GenerateInvoicePDF(Order order)
+        {
+            string idStr = order.Id.ToString().PadLeft(5, '0');
+            string filename = $"faktura{idStr}";
+            string seller = GetSellerName(order.SellerId);
+            double nettoSum = 0, vatSum = 0, bruttoSum = 0;
+            string html = $@"<!DOCTYPE html>
+            <html lang=""pl"">
+            <head>
+                <meta charset=""UTF-8"">
+                <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
+                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                <title>{idStr}</title>
+                <style>
+                    * {{
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-weight: 500;
+                        padding: 10px;
+                        margin-bottom: 25px;
+                    }}
+                    .top {{
+                        text-align: end;
+                    }}
+                    .top>img {{
+                        float: left;
+                        margin-top: -20px;
+                    }}
+                    .title {{
+                        border-top: 3px solid black;
+                        border-bottom: 3px solid black;
+                        font-size: x-large;
+                        font-weight: 700;
+                        background-color: blanchedalmond;
+                    }}
+                    .info {{
+                        width: fit-content;
+                        max-width: 45%;
+                        font-weight: 600;
+                        float: left ;
+                        margin-top: -40px;
+                    }}
+                    .info:last-child {{
+                        float: right;
+                    }}
+                    .info>p {{
+                        border-bottom: 3px solid black;
+                        font-weight: 700;
+                        font-size: large;
+                    }}
+                    .wares {{
+                        border-collapse: collapse;
+                        width: 100%;
+                    }}
+                    .wares th, .wares td {{
+                        border: 2px solid black;
+                        padding: 3px;
+                    }}
+                    .wares tr:nth-child(odd):not(:nth-child(1)) {{
+                        background-color: aliceblue;
+                    }}
+                    .wares th {{
+                        font-weight: bold;
+                    }}
+                    .wares:last-of-type tr:last-child td:first-child {{
+                        text-align: end;
+                    }}
+                    .wares tr:first-child, .wares:last-child tr:last-child {{
+                        background-color: blanchedalmond;
+                    }}
+                    .sum {{
+                        margin-top: 120px;
+                        background-color: blanchedalmond;
+                        font-weight: bold;
+                        text-decoration: underline;
+                    }}
+            </style>
+            </head>
+            <body>
+                <div class=""top"">
+                    <img src=""logo.png"" alt=""logo"">
+                    <span>Data wystawienia faktury: {order.CreationTime.ToShortDateString()}</span><br/>
+                    <span>Data sprzedaży: {order.CreationTime.ToShortDateString()}</span>
+                </div>
+                <div class=""title"">
+                    Faktura nr: {idStr}
+                </div>
+                <div class=""info"">
+                    <p>Sprzedawca</p>
+                    {seller}<br/>
+                    ul. chujwiegdzie 420<br/>
+                    00-000<br/><br/>
+                    <span>NIP:</span> 7452542421<br/>
+                    <span>e-mail:</span> {seller}-contact@gmail.com<br/><br/>
+                    Nr konta: 00 1122 3344 5566 7788 9999 0000
+                </div>
+                <div class=""info"">
+                    <p>Nabywca</p>
+                    Firma<br/>
+                    ul. Busha 9/11<br/>
+                    00-000<br/><br/>
+                    <span>NIP:</span> 8564342193<br/>
+                    <span>e-mail:</span> biblestudioes001@gmail.com<br/><br/>
+                    Nr konta: 00 2211 4433 6655 8877 0000 9999
+                </div>
+                <table class=""wares"">
+                    <tr>
+                        <th>lp.</th>
+                        <th>Nazwa towaru/usługi</th>
+                        <th>Ilość</th>
+                        <th>Jednostka</th>
+                        <th>Cena netto</th>
+                        <th>VAT</th>
+                        <th>Kwota netto</th>
+                        <th>Kwota VAT</th>
+                        <th>Kwota brutto</th>
+                    </tr>
+                    {
+                        string.Join(' ', 
+                        order.Wares.ToList().Select((stack, i) =>
+                        {
+                            var nettoS = Math.Round(stack.Ware.Price / 1.23, 2);
+                            var netto = Math.Round(nettoS * stack.Amount, 2);
+                            var brutto = Math.Round(stack.Ware.Price * stack.Amount, 2);
+                            var vat = Math.Round(brutto - netto, 2);
+
+                            nettoSum += netto;
+                            vatSum += vat;
+                            bruttoSum += brutto;
+
+                            return $@"
+                            <tr>
+                                <td>{i + 1}.</td> 
+                                <td>{stack.Ware.Name}</td>
+                                <td>{stack.Amount}</td>
+                                <td>szt.</td>
+                                <td>{nettoS}</td>
+                                <td>23%</td>
+                                <td>{netto}</td>
+                                <td>{vat}</td>
+                                <td>{brutto}</td>
+                            </tr>";
+                        }))
+                    }
+                </table>
+                <table class=""wares"" style=""width: 40%; float: right"">
+                    <tr>
+                        <th>Stawka VAT</th>
+                        <th>Netto</th>
+                        <th>VAT</th>
+                        <th>Brutto</th>
+                    </tr>
+                    <tr>
+                        <td>23%</td>
+                        <td>{nettoSum}</td>
+                        <td>{vatSum}</td>
+                        <td>{bruttoSum}</td>
+                    </tr>
+                    <tr>
+                        <td>Razem</td>
+                        <td>{nettoSum}</td>
+                        <td>{vatSum}</td>
+                        <td>{bruttoSum}</td>
+                    </tr>
+                </table>
+                <h2 class=""sum"">Razem do zapłaty: {bruttoSum} zł</h2>
+            </body>
+            </html>";
+            string path = Path.Combine(DIR, filename + ".html");
+            File.WriteAllText(path, html);
+            OpenWithChrome(HTML2PDF(path, filename));
         }
         #endregion
     }

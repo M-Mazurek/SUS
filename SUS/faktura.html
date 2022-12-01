@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faktura</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            padding: 10px;
+            margin-bottom: 25px;
+        }
+        .top {
+            text-align: end;
+        }
+        .top>img {
+            float: left;
+            margin-top: -20px;
+        }
+        .title {
+            border-top: 3px solid black;
+            border-bottom: 3px solid black;
+            font-size: x-large;
+            font-weight: 700;
+            background-color: blanchedalmond;
+        }
+        .info {
+            width: fit-content;
+            max-width: 45%;
+            font-weight: 600;
+            float:left ;
+            margin-top: -40px;
+        }
+        .info:last-child {
+            float: right;
+        }
+        .info>p {
+            border-bottom: 3px solid black;
+            font-weight: 700;
+            font-size: large;
+        }
+        .wares {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .wares th, .wares td {
+            border: 3px solid black;
+            padding: 3px;
+        }
+        .wares tr:nth-child(odd):not(:nth-child(1)) {
+            background-color: aliceblue;
+        }
+        .wares th {
+            font-weight: bold;
+        }
+        .wares:last-of-type tr:last-child td:first-child {
+            text-align: end;
+        }
+        .wares tr:first-child, .wares:last-child tr:last-child {
+            background-color: blanchedalmond;
+        }
+        .sum {
+            margin-top: 120px;
+            background-color: blanchedalmond;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <img src="logo.png" alt="logo">
+        <span>Data wystawienia faktury: <b></b></span><br/>
+        <span>Data sprzedaży: <b></b></span>
+    </div>
+    <div class="title">
+        Faktura nr:
+    </div>
+    <div class="info">
+        <p>Sprzedawca</p>
+        Firma<br/>
+        ul. chujwiegdzie 420<br/>
+        00-000<br/><br/>
+        <span>NIP:</span> 6969696969<br/>
+        <span>e-mail:</span> biblestudioes001@gmail.com<br/><br/>
+        Nr konta: XX XXXX XXXX XXXX XXXX XXXX XXXX
+    </div>
+    <div class="info">
+        <p>Nabywca</p>
+        Brubelek <br/>
+        ul. Busha 9/11<br/>
+        00-000<br/><br/>
+        <span>NIP:</span> 6969696969<br/>
+        <span>e-mail:</span> biblestudioes002@gmail.com<br/><br/>
+        Nr konta: XX XXXX XXXX XXXX XXXX XXXX XXXX
+    </div>
+    <table class="wares">
+        <tr>
+            <th>lp.</th>
+            <th>Nazwa towaru/usługi</th>
+            <th>Ilość</th>
+            <th>Jednostka</th>
+            <th>Cena netto</th>
+            <th>VAT</th>
+            <th>Kwota netto</th>
+            <th>Kwota VAT</th>
+            <th>Kwota brutto</th>
+        </tr>
+        <tr>
+            <td>1.</td> 
+            <td>Potężny frytus</td>
+            <td>3</td>
+            <td>szt.</td>
+            <td>27.00</td>
+            <td>23%</td>
+            <td>71.00</td>
+            <td>16.33</td>
+            <td>87.33</td>
+        </tr>
+        <tr>
+            <td>2.</td> 
+            <td>Potężny frytus</td>
+            <td>3</td>
+            <td>szt.</td>
+            <td>27.00</td>
+            <td>23%</td>
+            <td>71.00</td>
+            <td>16.33</td>
+            <td>87.33</td>
+        </tr>
+    </table>
+    <table class="wares" style="width: 40%; float: right">
+        <tr>
+            <th>Stawka VAT</th>
+            <th>Netto</th>
+            <th>VAT</th>
+            <th>Brutto</th>
+        </tr>
+        <tr>
+            <td>23%</td>
+            <td>142.00</td>
+            <td>32.66</td>
+            <td>174.66</td>
+        </tr>
+        <tr>
+            <td>Razem</td>
+            <td>142.00</td>
+            <td>32.66</td>
+            <td>174.66</td>
+        </tr>
+    </table>
+    <h2 class="sum">Razem do zapłaty: 00.00 zł</h2>
+</body>
+</html>
