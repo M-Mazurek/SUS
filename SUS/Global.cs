@@ -27,7 +27,7 @@ namespace SUS
         private static WareStack[] _storageUnit = Array.Empty<WareStack>();
         public readonly static string DIR;
         readonly static SqlConnection CONN;
-        readonly static string CHROME = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+        readonly static string CHROME = @"C\Program Files (x86)\Google\Chrome\Application\chrome.exe";
 
         public static (string Login, byte Type) CurrentUser { get; private set; }
 
@@ -35,8 +35,6 @@ namespace SUS
 
         static Global() 
         {
-            while (!File.Exists(CHROME))
-                CHROME = Interaction.InputBox("Google Chrome nie istnieje pod domyślną ścieżką.\nW celu poprawnego generowania dokumentów podaj ścieżkę do tego programu.", DefaultResponse: CHROME);
             DIR = Directory.GetParent(System.IO.Directory.GetCurrentDirectory())!.Parent!.Parent!.FullName;
             string dbPath = Path.Combine(DIR, "Database.mdf");
             string connStr = @$"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={dbPath};User ID=ni4;Password=g3r;Trusted_Connection=True;";
