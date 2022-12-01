@@ -13,7 +13,8 @@ namespace SUS
     public partial class StwórzKorekty : Form
     {
         private CustomCombo customComboCompanies;
-        private CustomNumericUpDown? cn;
+        private List<Order>? orders;
+        private List<int>? sellerIds;
         public StwórzKorekty()
         {
             InitializeComponent();
@@ -33,23 +34,37 @@ namespace SUS
                 InnerBorderColor = BackColor,
                 ArrowBackgroundColor = Color.FromArgb(36, 36, 36),
                 ForeColor = Color.White,
-                Items = { "Firma1", "Firma2", "Firma3" }, // viable companies
             };
+            customComboCompanies.Items.AddRange(Global.GetSellers().Select(x => x.Name).ToArray()); // viable companies
+
+            sellerIds = new List<int>(Global.GetSellers().Select(x => x.Id).ToArray());
+
+            customComboCompanies.SelectedIndexChanged += CustomComboCompanies_SelectedIndexChanged;
             panelFilters.Controls.Add(customComboCompanies);
 
             CreateOrders();
             ExtensionMethods.StartAnim(this);
         }
+        private void CustomComboCompanies_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            CreateOrders();
+        }
         private void CreateOrders()
         {
             panelOrders.Controls.Clear();
 
-            int maxOrders = 20;
+            if (customComboCompanies!.SelectedIndex == -1)
+                return;
+
+            orders = new List<Order>(Global.GetOrders(sellerIds![customComboCompanies!.SelectedIndex]));
+
+            int maxOrders = orders.Count;
             for (int i = 0; i < maxOrders; i++)
             {
                 Based based = new Based()
                 {
                     Location = new(0, 10 + (10 * i) + (50 * i)),
+                    Name = i.ToString(),
                 };
                 if (i == maxOrders - 1)
                     based.Size = new(based.Width, based.Height + 50 - 10);
@@ -57,54 +72,19 @@ namespace SUS
                 {
                     foreach (Label l in c.Controls)
                     {
+                        l.Click += Based_Click;
+                        //orders[i].Wares.ToList().Select(x => x.Ware.Price);
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { "towar" + i.ToString(), $"420 zł", "0", $"0 zł" }, true); // swaps label names to correct ones
-                        if (l.Name == "label3")
-                        {
-                            //l.BackColor = Color.FromArgb(50, 99, 212, 113);
-                            l.Text = "";
-                            cn = new CustomNumericUpDown()
-                            {
-                                Size = l.Size,
-                                Location = new(0, 14),
-                                TextAlign = HorizontalAlignment.Center,
-                                BackColor = Color.FromArgb(60, 60, 60),
-                                ForeColor = Color.White,
-                                Font = l.Font,
-                                BorderStyle = BorderStyle.None,
-                                Maximum = 999999999,
-                            };
-                            cn.ValueChanged += Cn_ValueChanged;
-                            l.Controls.Add(cn);
-                        }
-
+                        ExtensionMethods.ChangeName(l, new string[] { orders[i].Wares.ToList().Select(x => x.Ware.Name).Count() > 1 ? $"{ orders[i].Wares.ToList().Select(x => x.Ware.Name).FirstOrDefault() + "..." }" : $"{ orders[i].Wares.ToList().Select(x => x.Ware.Name).FirstOrDefault() }", $"{orders[i].Id.ToString().PadLeft(4, '0')}", $"{ExtensionMethods.SetupStatus(orders[i].Status)}", $"{orders[i].CreationTime}" }, false); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
             }
-            UpdateSum();
         }
-        private void Cn_ValueChanged(object? sender, EventArgs e)
+        private void Based_Click(object? sender, EventArgs e)
         {
-            ExtensionMethods.GetPrice(panelOrders);
-            UpdateSum();
+            ExtensionMethods.SwitchForm(this, new DetaleKorekty(orders![Int32.Parse(((Label)sender!).Parent.Parent.Name)]));
         }
-        private void UpdateSum()
-        {
-            lbSuma.Text = $"Suma: {ExtensionMethods.GetSum(panelOrders)} zł";
-        }
-
-        private void btnReset_Click(object sender, EventArgs e)
-        {
-            CustomNumericUpDown.SetValue(panelOrders, 0);
-        }
-
-        private void btnConfirm_Click(object sender, EventArgs e)
-        {
-            // add
-            ExtensionMethods.SwitchForm(this, new PanelKorekty());
-        }
-
         private void btnBack_Click(object sender, EventArgs e)
         {
             ExtensionMethods.SwitchForm(this, new PanelKorekty());

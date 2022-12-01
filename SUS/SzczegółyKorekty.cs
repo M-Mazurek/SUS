@@ -13,14 +13,17 @@ namespace SUS
 {
     public partial class SzczegółyKorekty : Form
     {
-        public SzczegółyKorekty(string korektaId, string orderId, string company, string date)
+        private Correction correction;
+        public SzczegółyKorekty(Correction correction)
         {
             InitializeComponent();
 
-            txtCompany.Text = company;
-            txtDate.Text = date;
-            txtState.Text = ""; 
-            txtKorektaId.Text = korektaId;
+            this.correction = correction;
+
+            txtCompany.Text = Global.GetSellerName(Global.GetOrderById(correction.OrderId).FirstOrDefault().SellerId);
+            txtDate.Text = correction.CreationTime.ToString();
+            txtState.Text = ExtensionMethods.SetupStatus(Global.GetOrderById(correction.OrderId).FirstOrDefault().Status); 
+            txtKorektaId.Text = correction.OrderId.ToString().PadLeft(4, '0');
 
             panelOrders.HorizontalScroll.Maximum = 0;
             panelOrders.AutoScroll = false;
@@ -28,12 +31,19 @@ namespace SUS
             panelOrders.AutoScroll = true;
 
             CreateOrders();
+
+            if (txtState.Text == "Oczekujące")
+            {
+                btnConfirm.Visible = true;
+                txtState.Location = new(txtState.Location.X, 248);
+            }
+
             ExtensionMethods.StartAnim(this);
         }
         private void CreateOrders()
         {
             panelOrders.Controls.Clear();
-            int maxOrders = 15;
+            int maxOrders = correction.InexactWares.Count();
             for (int i = 0; i < maxOrders; i++)
             {
                 Based based = new Based()
@@ -47,7 +57,7 @@ namespace SUS
                     foreach (Label l in c.Controls)
                     {
                         ExtensionMethods.SetupLabels(l, new int[] { lbTowar.Width, lbCenaSz.Width, lbIlosc.Width, lbCena.Width }, new int[] { lbTowar.Location.X, lbCenaSz.Location.X, lbIlosc.Location.X, lbCena.Location.X });
-                        ExtensionMethods.ChangeName(l, new string[] { $"Towar{i}", $"{10 + i * 20}", $"{i}", $"0" }, true); // swaps label names to correct ones
+                        ExtensionMethods.ChangeName(l, new string[] { $"{correction.InexactWares[i].Ware.Name}", $"{correction.InexactWares[i].Ware.Price}", $"{correction.InexactWares[i].Amount}", $"0" }, true); // swaps label names to correct ones
                     }
                 }
                 panelOrders.Controls.Add(based);
@@ -60,6 +70,12 @@ namespace SUS
         }
         private void btnBack_Click(object sender, EventArgs e)
         {
+            ExtensionMethods.SwitchForm(this, new PanelKorekty());
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            Global.ConfirmOrder(Global.GetOrderById(correction.OrderId).FirstOrDefault());
             ExtensionMethods.SwitchForm(this, new PanelKorekty());
         }
     }

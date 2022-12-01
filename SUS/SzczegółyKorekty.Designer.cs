@@ -169,6 +169,7 @@
             this.btnConfirm.Text = "Potwierdź";
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Visible = false;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // btnBack
             // 

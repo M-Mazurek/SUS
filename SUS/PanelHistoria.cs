@@ -21,22 +21,41 @@ namespace SUS
             panelOrders.VerticalScroll.Visible = false;
             panelOrders.AutoScroll = true;
 
+            CreateHistory();
             ExtensionMethods.StartAnim(this);
         }
-
-        private void btnClearHistory_Click(object sender, EventArgs e)
+        private void CreateHistory() 
         {
-            //clear B)
-        }
+            panelOrders.Controls.Clear();
 
-        private void btnOrderHistory_Click(object sender, EventArgs e)
-        {
+            List<HistoryEvent> historyEvents = new List<HistoryEvent>(Global.GetEvents());
 
-        }
+            int maxOrders = historyEvents.Count;
+            for (int i = 0; i < maxOrders; i++)
+            {
+                Based based = new Based()
+                {
+                    Location = new(0, 10 + (10 * i) + (50 * i)),
+                    Size = new(950, 50),
+                    Name = i.ToString(),
+                };
+                if (i == maxOrders - 1)
+                    based.Size = new(based.Width, based.Height + 10);
+                foreach (Control c in based.Controls)
+                {
+                    if (c.Name != "panel1")
+                        continue;
 
-        private void btnActionHistory_Click(object sender, EventArgs e)
-        {
+                    c.Size = new(based.Width, 50);
 
+                    foreach (Label l in c.Controls)
+                    {
+                        ExtensionMethods.SetupLabels(l, new int[] { lbActionName.Width, lbDate.Width, 0, 0 }, new int[] { lbActionName.Location.X, lbDate.Location.X, 0, 0 });
+                        ExtensionMethods.ChangeName(l, new string[] { $"{historyEvents[i].Text}", $"{historyEvents[i].EventTime}", "", "" }, false); // swaps label names to correct ones
+                    }
+                }
+                panelOrders.Controls.Add(based);
+            }
         }
     }
 }

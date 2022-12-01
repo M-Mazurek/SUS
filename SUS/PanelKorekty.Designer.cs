@@ -37,6 +37,11 @@
             this.lbNrKorekty = new System.Windows.Forms.Label();
             this.panelOrders = new System.Windows.Forms.Panel();
             this.panelFilters = new System.Windows.Forms.Panel();
+            this.btnFilter = new System.Windows.Forms.Button();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.txtTowar = new System.Windows.Forms.TextBox();
             this.btnCreate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -119,6 +124,11 @@
             // panelFilters
             // 
             this.panelFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
+            this.panelFilters.Controls.Add(this.btnFilter);
+            this.panelFilters.Controls.Add(this.dtpEnd);
+            this.panelFilters.Controls.Add(this.dtpStart);
+            this.panelFilters.Controls.Add(this.label3);
+            this.panelFilters.Controls.Add(this.label2);
             this.panelFilters.Controls.Add(this.txtTowar);
             this.panelFilters.Controls.Add(this.btnCreate);
             this.panelFilters.Controls.Add(this.label1);
@@ -126,6 +136,57 @@
             this.panelFilters.Name = "panelFilters";
             this.panelFilters.Size = new System.Drawing.Size(200, 520);
             this.panelFilters.TabIndex = 5;
+            // 
+            // btnFilter
+            // 
+            this.btnFilter.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(212)))), ((int)(((byte)(113)))));
+            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFilter.ForeColor = System.Drawing.Color.White;
+            this.btnFilter.Location = new System.Drawing.Point(27, 442);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(150, 30);
+            this.btnFilter.TabIndex = 21;
+            this.btnFilter.Text = "Filtruj";
+            this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
+            // dtpEnd
+            // 
+            this.dtpEnd.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dtpEnd.Location = new System.Drawing.Point(0, 247);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(200, 23);
+            this.dtpEnd.TabIndex = 20;
+            // 
+            // dtpStart
+            // 
+            this.dtpStart.CalendarMonthBackground = System.Drawing.Color.White;
+            this.dtpStart.Location = new System.Drawing.Point(0, 147);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(200, 23);
+            this.dtpStart.TabIndex = 19;
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(10, 197);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(180, 25);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Wybierz Datę Końcową";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(3, 97);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(194, 25);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Wybierz Datę Początkową";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtTowar
             // 
@@ -150,6 +211,7 @@
             this.btnCreate.TabIndex = 4;
             this.btnCreate.Text = "Utwórz korektę";
             this.btnCreate.UseVisualStyleBackColor = true;
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
             // 
             // label1
             // 
@@ -198,5 +260,10 @@
         private Button btnCreate;
         private Label label1;
         private TextBox txtTowar;
+        private DateTimePicker dtpEnd;
+        private DateTimePicker dtpStart;
+        private Label label3;
+        private Label label2;
+        private Button btnFilter;
     }
 }

@@ -16,6 +16,7 @@ namespace SUS
         private CustomCombo customComboCompanies;
         private CustomNumericUpDown? cn;
         private List<Ware>? wares;
+        private List<int>? sellerIds;
         public StwórzZamówienie()
         {
             InitializeComponent();
@@ -37,6 +38,9 @@ namespace SUS
                 ForeColor = Color.White,
             };
             customComboCompanies.Items.AddRange(Global.GetSellers().Select(x => x.Name).ToArray()); // viable companies
+            
+            sellerIds = new List<int>(Global.GetSellers().Select(x => x.Id).ToArray());
+
             customComboCompanies.SelectedIndexChanged += CustomComboCompanies_SelectedIndexChanged;
             panelFilters.Controls.Add(customComboCompanies);
 
@@ -56,7 +60,9 @@ namespace SUS
             if (customComboCompanies!.SelectedIndex == -1)
                 return;
 
-            wares = new List<Ware>(Global.GetWaresFrom(customComboCompanies!.SelectedIndex + 1));
+            //MessageBox.Show($"ITEM: {customComboCompanies!.SelectedItem}, TEXT: {customComboCompanies!.SelectedText}, VALUE: {customComboCompanies!.SelectedValue}");
+
+            wares = new List<Ware>(Global.GetWaresFrom(sellerIds![customComboCompanies!.SelectedIndex]));
             //wares.ForEach(x => MessageBox.Show($"{x.Name}"));
 
             int maxOrders = wares.Count;
@@ -115,6 +121,8 @@ namespace SUS
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            if (customComboCompanies!.SelectedIndex == -1)
+                return;
             List<WareStack> wareStacks = new List<WareStack>();
             // do smth
             //CustomNumericUpDown.GetValues(panelOrders).ForEach(x => MessageBox.Show(x.ToString()));
